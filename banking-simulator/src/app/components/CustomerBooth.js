@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function CustomerBooth() {
+export default function customerbooth() {
   // "hidden" means the customer is centered but invisible.
   // "centerVisible" means the customer is visible at center.
   const [customerState, setCustomerState] = useState("hidden");
