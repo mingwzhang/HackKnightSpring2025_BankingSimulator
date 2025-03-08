@@ -37,7 +37,10 @@ export default function Home() {
         backgroundRepeat: "no-repeat",
       }}
 >
-        
+                  {/* Background Rectangles with 3D-like shading */}
+                  <div className="absolute top-0 left-0 w-1/4 h-full bg-gray-700 opacity-50 z-0"></div>
+          <div className="absolute top-0 left-1/4 w-1/2 h-full bg-gray-500 opacity-60 z-0"></div>
+          <div className="absolute top-0 left-3/4 w-1/4 h-full bg-gray-800 opacity-50 z-0"></div>
         {/* Invisible Container that Controls Everything Inside */}
         <div 
           id="game-container" 
@@ -53,10 +56,18 @@ export default function Home() {
           {/* Inspector's Booth (Blue Holographic Screen) */}
           <CustomerBooth parentFunction={handleNextCustomer} parentFunction2={customerArrival}/>
 
-          {/* Instruction Panel (Right of Booth, No Gap, Aligned at the Top) */}
-          <div className="absolute left-[calc(75%)] top-20 w-[15%] h-[25%] bg-yellow-300 shadow-md flex items-center justify-center">
-            <p className="text-lg font-semibold text-gray-700">Instruction</p>a
-          </div>
+{/* Instruction Panel (Now with perfectly scaled note.png) */}
+<div 
+  className="absolute left-[calc(75%)] top-20 w-[20%] h-[35%] shadow-md flex items-center justify-center"
+  style={{
+    backgroundImage: "url('/img/note.png')",
+    backgroundSize: "100% 100%",  // Ensures it perfectly fits the container
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+</div>
+
 
           {/* Desk (Trapezoid Shape) */}
           <Desk/>

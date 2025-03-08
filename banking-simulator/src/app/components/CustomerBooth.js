@@ -75,8 +75,8 @@ export default function CustomerBooth({ parentFunction, parentFunction2 }) {
     emote === "happy"
       ? "/img/sign_happy.gif"
       : emote === "angry"
-      ? "/img/sign_angry.gif"
-      : null;
+        ? "/img/sign_angry.gif"
+        : null;
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -116,7 +116,6 @@ export default function CustomerBooth({ parentFunction, parentFunction2 }) {
           )}
         </div>
 
-        <p className="text-lg font-semibold text-white">Inspector's Booth</p>
       </div>
 
       {/* Control Buttons */}
