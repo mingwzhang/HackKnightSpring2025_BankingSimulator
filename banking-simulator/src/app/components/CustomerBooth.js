@@ -30,7 +30,9 @@ export default function CustomerBooth({ parentFunction, parentFunction2 }) {
   const moveToCenter = () => {
     if (!animating && customerState === "hidden") {
       parentFunction()
-      parentFunction2(1)
+      setTimeout(() => {
+        parentFunction2(1)
+      }, 1700);
       setAnimating(true);
       setAnimationType("enter");
     }

@@ -35,7 +35,9 @@ export default function Home() {
           className="relative w-[1200px] h-[800px] scale-100 md:scale-90 lg:scale-75 xl:scale-120 transition-transform duration-300 flex flex-col items-center"
         >
         <div className="flex justify-center">
-          <div className="flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-75 mt-0 z-10">
+          <div className={customerExists ? "flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-[80%] mt-0 z-10 animate-fadeIn"
+            : "flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-75 mt-0 z-10 animate-fadeOut"
+          }>
             <DialogueBox/>
           </div>
         </div>
@@ -59,18 +61,56 @@ export default function Home() {
           <div className ="text-black"> {customerList[currentCustomer]?._id} </div>
 
           {/* Document System (Transparent Light Blue Box at Bottom Right of Desk) */}
-          <div className={customerExists ? "absolute bottom-37 right-0 w-[35%] h-[42%] opacity-75 border-4 border-white rounded-2xl overflow-hidden shadow-md flex" 
-          : "absolute bottom-37 right-0 w-[35%] h-[42%] opacity-0 border-4 border-white rounded-2xl overflow-hidden shadow-md flex"}>
+          <div className={customerExists ? "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeUp" 
+          : "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeOut"}>
             <Tablet customerId={customerList[currentCustomer]} apiKey={key}/>
           </div>
         </div>
 
         {/* Tailwind Custom Styles for Trapezoid */}
+              
         <style jsx>{`
-          .clip-trapezoid {
-            clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 0% 50%);
+        .clip-trapezoid {
+        clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 0% 50%);
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
           }
-        `}</style>
+          to {
+            opacity: 0.85;
+          }
+        }
+        @keyframes fadeUp {
+          from {
+            transform: translateX(0) translateY(30px);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0) translateY(0);
+            opacity: 0.85;
+          }
+        }
+        @keyframes fadeOut {
+          from {
+            transform: translateX(0);
+            opacity: 0.85;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 0;
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 1s ease-in-out forwards;
+        }
+        .animate-fadeUp {
+          animation: fadeUp 1s ease-in-out forwards;
+        }
+        .animate-fadeOut {
+          animation: fadeOut 1s ease-in-out forwards;
+        }`}
+        </style>
       </div>
     );
 }
