@@ -1,5 +1,7 @@
 "use client";
 
+import Tablet from "./components/tablet";
+
 export default function Home() {
     return (
 <div className="flex items-center justify-center min-h-screen py-50 bg-gray-100">
@@ -28,8 +30,8 @@ export default function Home() {
           </div>
 
           {/* Document System (Transparent Light Blue Box at Bottom Right of Desk) */}
-          <div className="absolute bottom-50 right-10 w-[20%] h-[30%] bg-blue-300 bg-opacity-30 border-2 border-blue-400 shadow-md flex items-center justify-center">
-            <p className="text-lg font-semibold text-white">Document System</p>
+          <div className="absolute bottom-50 right-4 w-[40%] h-[45%] opacity-75 border-2 border-white rounded-2xl overflow-hidden shadow-md flex">
+            <Tablet/>
           </div>
         </div>
 
