@@ -91,11 +91,11 @@ export default function CustomerBooth() {
           onAnimationEnd={handleAnimationEnd}
         >
           {/* Customer Inner: visual element that gets the bob (walking) effect */}
-          <div
-            className={`w-full h-full bg-gray-500 rounded-md ${
+          <img src="https://i.kym-cdn.com/photos/images/newsfeed/002/417/159/98e"
+            className={`h-full rounded-md ${
               animating ? "animate-bop" : ""
             }`}
-          ></div>
+          ></img>
         </div>
         <p className="text-lg font-semibold text-white">Inspector's Booth</p>
       </div>
