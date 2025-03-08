@@ -1,4 +1,5 @@
 "use client";
+import CustomerBooth from "./components/CustomerBooth";
 
 export default function Home() {
     return (
@@ -11,9 +12,7 @@ export default function Home() {
         >
           
           {/* Inspector's Booth (Blue Holographic Screen) */}
-          <div className="w-[60%] h-[40%] bg-blue-500 bg-opacity-30 border-2 border-blue-300 shadow-xl backdrop-blur-md flex items-center justify-center">
-            <p className="text-lg font-semibold text-white">Inspector's Booth</p>
-          </div>
+          <CustomerBooth />
 
           {/* Instruction Panel (Right of Booth, No Gap, Aligned at the Top) */}
           <div className="absolute left-[calc(75%)] top-20 w-[15%] h-[25%] bg-yellow-300 shadow-md flex items-center justify-center">
