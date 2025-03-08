@@ -1,5 +1,6 @@
 "use client";
 import CustomerBooth from "./components/CustomerBooth";
+import DialogueBox from "./components/dialoguebox";
 
 import Tablet from "./components/tablet";
 
@@ -12,7 +13,11 @@ export default function Home() {
           id="game-container" 
           className="relative w-[1200px] h-[800px] scale-100 md:scale-90 lg:scale-75 xl:scale-120 transition-transform duration-300 flex flex-col items-center"
         >
-          
+        <div className="flex justify-center">
+          <div className="flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-75 mt-0 z-10">
+            <DialogueBox/>
+          </div>
+        </div>
           {/* Inspector's Booth (Blue Holographic Screen) */}
           <CustomerBooth />
 
@@ -30,7 +35,7 @@ export default function Home() {
 
           {/* Document System (Transparent Light Blue Box at Bottom Right of Desk) */}
           <div className="absolute bottom-37 right-0 w-[35%] h-[42%] opacity-75 border-4 border-white rounded-2xl overflow-hidden shadow-md flex">
-            <Tablet accountNumber={123412341234}/>
+            <Tablet accountNumber={1234123412341234}/>
           </div>
         </div>
 

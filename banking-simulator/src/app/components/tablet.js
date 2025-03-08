@@ -6,7 +6,7 @@ function Tablet({customerName, accountNumber, accountBalance}) {
           Name: {customerName}
         </div>
         <div className="flex justify-center p-1 text-xl">
-          Account Number: {accountNumber}
+          Account #: {accountNumber}
         </div>
         <div className="flex justify-center p-1 text-xl">
           Balance: ${accountBalance}
