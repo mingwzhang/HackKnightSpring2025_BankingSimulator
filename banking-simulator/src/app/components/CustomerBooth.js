@@ -90,8 +90,19 @@ export default function CustomerBooth() {
       {/* Booth Container */}
       <div
         id="game-container"
-        className="relative w-[600px] h-[400px] bg-[rgba(65,227,255,0.2)] border-2 border-blue-400 shadow-lg rounded-xl flex items-center justify-center overflow-hidden"
+        className="relative w-[600px] h-[400px] border-2 border-blue-400 shadow-lg rounded-xl flex items-center justify-center overflow-hidden"
+        style={{
+          backgroundImage: 'url(/img/bank_background.png)',
+          backgroundSize: "1000px auto",
+          backgroundPosition: "center",
+        }}
       >
+        <img
+          src="/img/glass.png"
+          alt="Glass Overlay"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-20"
+        />
+
         <div
           className={`absolute w-[350px] h-[350px] ${wrapperAnimationClass}`}
           style={
@@ -112,7 +123,10 @@ export default function CustomerBooth() {
 
           {/* Emote Image: positioned at customer's right ear */}
           {emote && (
-            <div className="absolute w-20 h-20" style={{ top: "15%", right: "15%" }}>
+            <div
+              className="absolute w-20 h-20"
+              style={{ top: "15%", right: "15%" }}
+            >
               <img
                 src={emoteImage}
                 alt="Emote"
@@ -188,35 +202,41 @@ export default function CustomerBooth() {
           animation: exitAnimation 2s ease-in-out forwards;
         }
         @keyframes bopAnimation {
-          0% { transform: translateY(-5px); }
-          25% { transform: translateY(0); }
-          50% { transform: translateY(-5px); }
-          75% { transform: translateY(0); }
-          100% { transform: translateY(-5px); }
+          0% {
+            transform: translateY(-5px);
+          }
+          25% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+          75% {
+            transform: translateY(0);
+          }
+          100% {
+            transform: translateY(-5px);
+          }
         }
         .animate-bop {
           animation: bopAnimation 0.5s ease-in-out infinite;
         }
-        /* Curve Emote Animation: 
-           For 0%-66.67% (2 seconds): minimal horizontal movement, moving upward.
-           For 66.67%-100% (last 1 second): moves horizontally more while fading out.
-           The transforms below approximate an exponential (2^x) behavior.
-        */
+        /* Curve Emote Animation */
         @keyframes curveEmote {
           0% {
             opacity: 1;
             transform: translate(0px, 0px) scale(1);
           }
           25% {
-            opacity: .75;
+            opacity: 0.75;
             transform: translate(15px, -25x) scale(1.05);
           }
           50% {
-            opacity: .5;
+            opacity: 0.5;
             transform: translate(25px, -50px) scale(1.1);
           }
           75% {
-            opacity: .25;
+            opacity: 0.25;
             transform: translate(30px, -75px) scale(1.12);
           }
           100% {
