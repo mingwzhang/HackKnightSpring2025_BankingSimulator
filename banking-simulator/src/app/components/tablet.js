@@ -2,7 +2,7 @@
 import { useState, useEffect} from 'react'
 
 
-function Tablet({ customerId , apiKey}) {
+export default function Tablet({ customerId , apiKey}) {
 
       //Get customer account info for tablet        ONCE THE TABLET HAS CUSTOMER'S ID, FIND INFO TO THEIR ACCOUNT
     const [customerAccount, setCustomerAccount] = useState([])
@@ -41,11 +41,9 @@ function Tablet({ customerId , apiKey}) {
         <button className="bg-blue-600 text-white rounded-md text-2xl p-3 hover:cursor-pointer hover:brightness-125 my-2 mt-3 mx-2">Withdraw</button>
         <button className="bg-blue-600 text-white rounded-md text-2xl p-3 hover:cursor-pointer hover:brightness-125 mb-2 mx-2">Deposit</button>
       </div>
-      <div className="flex justify-center rounded-xl items-center overflow-hidden mt-2">
-        <input type="number" min={0} className=" w-[80%] h-[55px] text-3xl bg-white rounded-xl"></input>
+      <div className="flex justify-center rounded-xl items-center overflow-hidden text-3xl mt-2">
+        $<input type="number" min={0} className=" w-[70%] h-[55px] bg-white ml-1 rounded-xl"></input>
       </div>
     </div>
   )
 }
-
-export default Tablet
