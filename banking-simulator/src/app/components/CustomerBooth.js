@@ -1,30 +1,32 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function CustomerBooth({ parentFunction }) {
   // "hidden" means the customer is centered but invisible;
   // "centerVisible" means the customer is visible at center.
   const [customerState, setCustomerState] = useState("hidden");
   const [animating, setAnimating] = useState(false);
-  // animationType: "enter" for fade-in (walking in) or "exit" for walking out to right.
+  // animationType: "enter" for fade-in (walking in) or "exit" for walking out.
   const [animationType, setAnimationType] = useState(null);
+  // Holds the current emote ("happy" or "angry") or null if no emote.
+  const [emote, setEmote] = useState(null);
 
-  // Handle the end of the horizontal movement animation (on the wrapper)
+  // Choose the customer image based on animationType.
+  const customerImage =
+    animationType === "exit" ? "/img/Customer2.png" : "/img/Customer.png";
+
   const handleAnimationEnd = (e) => {
     if (e.animationName === "enterAnimation") {
-      // Finished enter animation: customer is now visible at center.
       setAnimating(false);
       setAnimationType(null);
       setCustomerState("centerVisible");
     } else if (e.animationName === "exitAnimation") {
-      // Finished exit animation: reset customer back to center (hidden)
       setAnimating(false);
       setAnimationType(null);
       setCustomerState("hidden");
     }
   };
 
-  // Trigger the enter (fade-in + walk in) animation with bob effect
   const moveToCenter = () => {
     if (!animating && customerState === "hidden") {
       parentFunction()
@@ -33,7 +35,6 @@ export default function CustomerBooth({ parentFunction }) {
     }
   };
 
-  // Trigger the exit (walk out to right) animation with bob effect
   const moveToRight = () => {
     if (!animating && customerState === "centerVisible") {
       setAnimating(true);
@@ -41,49 +42,70 @@ export default function CustomerBooth({ parentFunction }) {
     }
   };
 
-  // Determine the wrapper's animation class based on the current animation type
   let wrapperAnimationClass = "";
   if (animating) {
     wrapperAnimationClass =
       animationType === "enter" ? "animate-enter" : "animate-exit";
   }
 
-  /* 
-    For horizontal centering:
-    - Booth width is 600px.
-    - Customer width is now 250px.
-    - Center = (600 - 250) / 2 = 175px.
-    Edit the left value here if booth or customer dimensions change.
-  */
   const restingWrapperStyle = !animating
     ? customerState === "centerVisible"
       ? {
-          left: "175px",
+          left: "124px",
+          bottom: "-10px",
           opacity: 1,
-          // Explicitly set the transform to match the end of enterAnimation
-          transform: "translateX(0) translateY(0) scale(1)"
+          transform: "translateX(0) translateY(0) scale(1)",
         }
       : {
-          left: "175px",
+          left: "124px",
+          bottom: "-10px",
           opacity: 0,
-          transform: "translateX(0) translateY(0) scale(1)"
+          transform: "translateX(0) translateY(100px) scale(1)",
         }
     : {};
+
+  // Emote handling: set an emote ("happy" or "angry") for 3 seconds.
+  const handleEmote = (type) => {
+    setEmote(type);
+  };
+
+  useEffect(() => {
+    if (emote) {
+      const timer = setTimeout(() => {
+        setEmote(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [emote]);
+
+  // Using GIF images for the emotes.
+  const emoteImage =
+    emote === "happy"
+      ? "/img/sign_happy.gif"
+      : emote === "angry"
+      ? "/img/sign_angry.gif"
+      : null;
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       {/* Booth Container */}
       <div
         id="game-container"
-        className="relative w-[600px] h-[400px] bg-[rgba(65,227,255,0.2)] border-2 border-blue-400 shadow-lg rounded-xl flex items-center justify-center overflow-hidden"
+        className="relative w-[600px] h-[400px] border-2 border-blue-400 shadow-lg rounded-xl flex items-center justify-center overflow-hidden"
+        style={{
+          backgroundImage: 'url(/img/bank_background.png)',
+          backgroundSize: "1000px auto",
+          backgroundPosition: "center",
+        }}
       >
-        {/* Customer Wrapper: handles horizontal movement, fading, and scale/translate adjustments */}
-        {/* 
-          Edit the inline "bottom" style below (currently set to "-10px") 
-          if you need to change how far below the booth the rectangle appears.
-        */}
+        <img
+          src="/img/glass.png"
+          alt="Glass Overlay"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-20"
+        />
+
         <div
-          className={`absolute w-[250px] h-[250px] ${wrapperAnimationClass}`}
+          className={`absolute w-[350px] h-[350px] ${wrapperAnimationClass}`}
           style={
             animating
               ? { bottom: "-10px" }
@@ -91,42 +113,69 @@ export default function CustomerBooth({ parentFunction }) {
           }
           onAnimationEnd={handleAnimationEnd}
         >
-          {/* Customer Inner: visual element that gets the bob (walking) effect */}
-          <img src="https://i.kym-cdn.com/photos/images/newsfeed/002/417/159/98e"
-            className={`h-full rounded-md ${
+          {/* Main Customer Image */}
+          <img
+            src={customerImage}
+            alt="Customer"
+            className={`h-full w-full object-contain rounded-md ${
               animating ? "animate-bop" : ""
             }`}
-          ></img>
+          />
+
+          {/* Emote Image: positioned at customer's right ear */}
+          {emote && (
+            <div
+              className="absolute w-20 h-20"
+              style={{ top: "15%", right: "15%" }}
+            >
+              <img
+                src={emoteImage}
+                alt="Emote"
+                className="w-full h-full object-contain curve-emote"
+              />
+            </div>
+          )}
         </div>
+
         <p className="text-lg font-semibold text-white">Inspector's Booth</p>
       </div>
-      {/* Control Buttons */}
-      <div className="mt-4 flex gap-4">
+
+      {/* Control Buttons Layout */}
+      <div className="mt-4 flex gap-4 items-center">
+        {/* Emotion Buttons (Left Side) */}
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
+          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50"
+          onClick={() => handleEmote("happy")}
+          disabled={emote !== null}
+        >
+          Satisfied
+        </button>
+        <button
+          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50"
+          onClick={() => handleEmote("angry")}
+          disabled={emote !== null}
+        >
+          Mad
+        </button>
+
+        {/* Movement Buttons (Right Side) */}
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
           onClick={moveToCenter}
           disabled={animating || customerState !== "hidden"}
         >
           Move to Center
         </button>
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
           onClick={moveToRight}
           disabled={animating || customerState !== "centerVisible"}
         >
           Move to Right
         </button>
       </div>
+
       <style jsx>{`
-        /* ----------------------------
-           Main Movement Animations
-           ----------------------------
-           Enter Animation: 
-           - Starts with a scale of 0.8 and translateY(100px) to simulate "walking in" from below.
-           - Ends at scale 1 and translateY(0).
-           Edit the scale (0.8) and translateY (100px) values here as needed.
-           Duration is set to 2s (edit here if necessary).
-        */
         @keyframes enterAnimation {
           from {
             transform: translateX(0) translateY(100px) scale(0.8);
@@ -137,42 +186,67 @@ export default function CustomerBooth({ parentFunction }) {
             opacity: 1;
           }
         }
-        /* Exit Animation remains unchanged */
         @keyframes exitAnimation {
           from {
             transform: translateX(0) scale(1);
             opacity: 1;
           }
           to {
-            /* Moves 380px to the right.
-               Adjust the translateX value here if booth or customer sizes change.
-            */
             transform: translateX(380px) scale(1);
             opacity: 0;
           }
         }
         .animate-enter {
-          animation: enterAnimation 2s ease-in-out forwards; /* Duration: 2s (edit here) */
+          animation: enterAnimation 2s ease-in-out forwards;
         }
         .animate-exit {
-          animation: exitAnimation 2s ease-in-out forwards; /* Duration: 2s (edit here) */
+          animation: exitAnimation 2s ease-in-out forwards;
         }
-        /* ----------------------------
-           Bob (Walking) Animation
-           ----------------------------
-           This creates a subtle vertical "bop" effect to simulate walking.
-           Here the vertical movement is reduced to 5px to help keep the bottom aligned.
-           Edit the duration (currently 0.5s) for a faster or slower bob.
-        */
         @keyframes bopAnimation {
-          0% { transform: translateY(-5px); }
-          25% { transform: translateY(0); }
-          50% { transform: translateY(-5px); }
-          75% { transform: translateY(0); }
-          100% { transform: translateY(-5px); }
+          0% {
+            transform: translateY(-5px);
+          }
+          25% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+          75% {
+            transform: translateY(0);
+          }
+          100% {
+            transform: translateY(-5px);
+          }
         }
         .animate-bop {
-          animation: bopAnimation 0.5s ease-in-out infinite; /* Bob cycle (edit duration here) */
+          animation: bopAnimation 0.5s ease-in-out infinite;
+        }
+        /* Curve Emote Animation */
+        @keyframes curveEmote {
+          0% {
+            opacity: 1;
+            transform: translate(0px, 0px) scale(1);
+          }
+          25% {
+            opacity: 0.75;
+            transform: translate(15px, -25x) scale(1.05);
+          }
+          50% {
+            opacity: 0.5;
+            transform: translate(25px, -50px) scale(1.1);
+          }
+          75% {
+            opacity: 0.25;
+            transform: translate(30px, -75px) scale(1.12);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(32px, -100px) scale(1.2);
+          }
+        }
+        .curve-emote {
+          animation: curveEmote 2s linear forwards;
         }
       `}</style>
     </div>
