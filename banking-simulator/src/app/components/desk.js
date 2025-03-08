@@ -2,10 +2,26 @@ export default function Desk() {
   return (
     <div className="relative w-full flex flex-col items-center">
       {/* Trapezoid Shape - Desk Surface */}
-      <div className="w-full h-30 bg-amber-700 shadow-lg clip-trapezoid flex items-center justify-center"></div>
+      <div
+        className="w-full h-30 shadow-lg clip-trapezoid flex items-center justify-center"
+        style={{
+          backgroundImage: "url('/img/desk1_texture.png')",
+          backgroundSize: "100% 100%",  // Ensures full fit
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      ></div>
 
       {/* Rectangle - Desk Base */}
-      <div className="w-full h-100 bg-amber-900 shadow-md"></div>
+      <div
+        className="w-full h-100 shadow-md"
+        style={{
+          backgroundImage: "url('/img/desk2_texture.png')",
+          backgroundSize: "100% 100%",  // Fills entire base
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      ></div>
 
       {/* Tailwind Custom Styles for Trapezoid & 3D Effect */}
       <style jsx>{`
