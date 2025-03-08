@@ -225,7 +225,7 @@ export default function CustomerBooth() {
           }
         }
         .curve-emote {
-          animation: curveEmote 3s linear forwards;
+          animation: curveEmote 2s linear forwards;
         }
       `}</style>
     </div>
