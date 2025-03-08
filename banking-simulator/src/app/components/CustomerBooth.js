@@ -2,16 +2,11 @@
 import { useState, useEffect } from "react";
 
 export default function CustomerBooth({ parentFunction }) {
-  // "hidden" means the customer is centered but invisible;
-  // "centerVisible" means the customer is visible at center.
   const [customerState, setCustomerState] = useState("hidden");
   const [animating, setAnimating] = useState(false);
-  // animationType: "enter" for fade-in (walking in) or "exit" for walking out.
   const [animationType, setAnimationType] = useState(null);
-  // Holds the current emote ("happy" or "angry") or null if no emote.
   const [emote, setEmote] = useState(null);
 
-  // Choose the customer image based on animationType.
   const customerImage =
     animationType === "exit" ? "/img/Customer2.png" : "/img/Customer.png";
 
@@ -29,7 +24,7 @@ export default function CustomerBooth({ parentFunction }) {
 
   const moveToCenter = () => {
     if (!animating && customerState === "hidden") {
-      parentFunction()
+      parentFunction();
       setAnimating(true);
       setAnimationType("enter");
     }
@@ -50,21 +45,10 @@ export default function CustomerBooth({ parentFunction }) {
 
   const restingWrapperStyle = !animating
     ? customerState === "centerVisible"
-      ? {
-          left: "124px",
-          bottom: "-10px",
-          opacity: 1,
-          transform: "translateX(0) translateY(0) scale(1)",
-        }
-      : {
-          left: "124px",
-          bottom: "-10px",
-          opacity: 0,
-          transform: "translateX(0) translateY(100px) scale(1)",
-        }
+      ? { left: "122px", bottom: "-10px", opacity: 1 }
+      : { left: "124px", bottom: "-10px", opacity: 0 }
     : {};
 
-  // Emote handling: set an emote ("happy" or "angry") for 3 seconds.
   const handleEmote = (type) => {
     setEmote(type);
   };
@@ -78,7 +62,6 @@ export default function CustomerBooth({ parentFunction }) {
     }
   }, [emote]);
 
-  // Using GIF images for the emotes.
   const emoteImage =
     emote === "happy"
       ? "/img/sign_happy.gif"
@@ -87,14 +70,14 @@ export default function CustomerBooth({ parentFunction }) {
       : null;
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-screen">
       {/* Booth Container */}
       <div
         id="game-container"
-        className="relative w-[600px] h-[400px] border-2 border-blue-400 shadow-lg rounded-xl flex items-center justify-center overflow-hidden"
+        className="relative w-[600px] h-[400px] shadow-lg rounded-xl flex items-center justify-center overflow-hidden border-5 border-blue-500"
         style={{
           backgroundImage: 'url(/img/bank_background.png)',
-          backgroundSize: "1000px auto",
+          backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
@@ -106,33 +89,20 @@ export default function CustomerBooth({ parentFunction }) {
 
         <div
           className={`absolute w-[350px] h-[350px] ${wrapperAnimationClass}`}
-          style={
-            animating
-              ? { bottom: "-10px" }
-              : { ...restingWrapperStyle, bottom: "-10px" }
-          }
+          style={animating ? { bottom: "-10px" } : { ...restingWrapperStyle, bottom: "-10px" }}
           onAnimationEnd={handleAnimationEnd}
         >
           {/* Main Customer Image */}
           <img
             src={customerImage}
             alt="Customer"
-            className={`h-full w-full object-contain rounded-md ${
-              animating ? "animate-bop" : ""
-            }`}
+            className={`h-full w-full object-contain rounded-md ${animating ? "animate-bop" : ""}`}
           />
 
-          {/* Emote Image: positioned at customer's right ear */}
+          {/* Emote Image */}
           {emote && (
-            <div
-              className="absolute w-20 h-20"
-              style={{ top: "15%", right: "15%" }}
-            >
-              <img
-                src={emoteImage}
-                alt="Emote"
-                className="w-full h-full object-contain curve-emote"
-              />
+            <div className="absolute w-20 h-20" style={{ top: "15%", right: "15%" }}>
+              <img src={emoteImage} alt="Emote" className="w-full h-full object-contain curve-emote" />
             </div>
           )}
         </div>
@@ -140,37 +110,26 @@ export default function CustomerBooth({ parentFunction }) {
         <p className="text-lg font-semibold text-white">Inspector's Booth</p>
       </div>
 
-      {/* Control Buttons Layout */}
+      {/* Control Buttons */}
       <div className="mt-4 flex gap-4 items-center">
-        {/* Emotion Buttons (Left Side) */}
-        <button
-          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50"
+        <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50"
           onClick={() => handleEmote("happy")}
-          disabled={emote !== null}
-        >
+          disabled={emote !== null}>
           Satisfied
         </button>
-        <button
-          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50"
+        <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50"
           onClick={() => handleEmote("angry")}
-          disabled={emote !== null}
-        >
+          disabled={emote !== null}>
           Mad
         </button>
-
-        {/* Movement Buttons (Right Side) */}
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+        <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
           onClick={moveToCenter}
-          disabled={animating || customerState !== "hidden"}
-        >
+          disabled={animating || customerState !== "hidden"}>
           Move to Center
         </button>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+        <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
           onClick={moveToRight}
-          disabled={animating || customerState !== "centerVisible"}
-        >
+          disabled={animating || customerState !== "centerVisible"}>
           Move to Right
         </button>
       </div>
@@ -178,11 +137,11 @@ export default function CustomerBooth({ parentFunction }) {
       <style jsx>{`
         @keyframes enterAnimation {
           from {
-            transform: translateX(0) translateY(100px) scale(0.8);
+            transform: translateY(100px) scale(0.8);
             opacity: 0;
           }
           to {
-            transform: translateX(0) translateY(0) scale(1);
+            transform: translateY(0) scale(1);
             opacity: 1;
           }
         }
@@ -203,47 +162,17 @@ export default function CustomerBooth({ parentFunction }) {
           animation: exitAnimation 2s ease-in-out forwards;
         }
         @keyframes bopAnimation {
-          0% {
-            transform: translateY(-5px);
-          }
-          25% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-5px);
-          }
-          75% {
-            transform: translateY(0);
-          }
-          100% {
-            transform: translateY(-5px);
-          }
+          0% { transform: translateY(-5px); }
+          50% { transform: translateY(0); }
+          100% { transform: translateY(-5px); }
         }
         .animate-bop {
           animation: bopAnimation 0.5s ease-in-out infinite;
         }
-        /* Curve Emote Animation */
         @keyframes curveEmote {
-          0% {
-            opacity: 1;
-            transform: translate(0px, 0px) scale(1);
-          }
-          25% {
-            opacity: 0.75;
-            transform: translate(15px, -25x) scale(1.05);
-          }
-          50% {
-            opacity: 0.5;
-            transform: translate(25px, -50px) scale(1.1);
-          }
-          75% {
-            opacity: 0.25;
-            transform: translate(30px, -75px) scale(1.12);
-          }
-          100% {
-            opacity: 0;
-            transform: translate(32px, -100px) scale(1.2);
-          }
+          0% { opacity: 1; transform: translate(0px, 0px) scale(1); }
+          50% { opacity: 0.5; transform: translate(25px, -50px) scale(1.1); }
+          100% { opacity: 0; transform: translate(32px, -100px) scale(1.2); }
         }
         .curve-emote {
           animation: curveEmote 2s linear forwards;

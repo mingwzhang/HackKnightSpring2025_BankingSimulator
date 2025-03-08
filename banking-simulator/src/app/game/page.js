@@ -2,6 +2,8 @@
 import CustomerBooth from "../components/CustomerBooth";
 import DialogueBox from "../components/dialoguebox";
 import Tablet from "../components/tablet";
+import Desk from "../components/desk";
+
 import { useState, useEffect} from 'react'
 
 export default function Home() {
@@ -26,7 +28,14 @@ export default function Home() {
       
 
     return (
-<div className="flex items-center justify-center min-h-screen py-50 bg-gray-100">
+<div className="flex items-center justify-center min-h-screen py-50 bg-gray-100"
+      style={{
+        backgroundImage: "url('/img/bank_background_texture.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+>
         
         {/* Invisible Container that Controls Everything Inside */}
         <div 
@@ -47,12 +56,8 @@ export default function Home() {
           </div>
 
           {/* Desk (Trapezoid Shape) */}
-          <div className="relative -mt-1 w-[100%] h-[50%] bg-gray-400 shadow-md clip-trapezoid flex items-center justify-center">
-            <p className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg font-semibold text-white">
-              Desk
-            </p>
-          </div>
-
+          <Desk/>
+          
           {/* Handles Next customer logic */}
           <button onClick={handleNextCustomer} className="w-20 text-black"> NEXT ! </button>
           <div className ="text-black"> {customerList[currentCustomer]?._id} </div>
@@ -62,13 +67,6 @@ export default function Home() {
             <Tablet customerId={customerList[currentCustomer]} apiKey={key}/>
           </div>
         </div>
-
-        {/* Tailwind Custom Styles for Trapezoid */}
-        <style jsx>{`
-          .clip-trapezoid {
-            clip-path: polygon(20% 0%, 80% 0%, 100% 50%, 0% 50%);
-          }
-        `}</style>
       </div>
     );
 }
