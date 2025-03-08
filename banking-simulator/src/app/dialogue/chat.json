@@ -1,0 +1,26 @@
+[
+  {
+    "first_name": "Cassandra",
+    "last_name": "Meier",
+    "text": ["Hey", "I want to make a withdraw"],
+    "number": 100
+  },
+  {
+    "first_name": "Hector",
+    "last_name": "Muller",
+    "text": ["Hello", "I'm here to make a deposit"],
+    "number": 400
+  },
+  {
+    "first_name": "Tom",
+    "last_name": "Huey",
+    "text": ["Yo", "Bro", "I want to like", "make a withdraw bro"],
+    "number": 300
+  },
+  {
+    "first_name": "Tom",
+    "last_name": "Huey",
+    "text": ["Yo", "Bro", "I want to like", "make a withdraw bro"],
+    "number": 200
+  }
+]

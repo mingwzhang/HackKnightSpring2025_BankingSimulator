@@ -12,11 +12,19 @@ export default function Home() {
       const [currentCustomer, setCurrentCustomer] = useState(0);
     
       useEffect(() => {
-          fetch(`http://api.nessieisreal.com/customers?key=${key}`)
-          .then(res => res.json())
-          .then(data => setCustomerList(data))
-          .catch(err => console.log(err))
+            const fetchCustomersList = () => {
+              fetch(`http://api.nessieisreal.com/customers?key=${key}`)
+              .then(res => res.json())
+              .then(data => {setCustomerList(data); console.log("Customer list updated" )})
+              .catch(err => console.log(err))
+            }
+
+            fetchCustomersList();
+
+            const timer = setInterval(fetchCustomersList, 10000);  //Update every 10 second
+            return () => clearInterval(timer); //clean up
       },[])
+
 
       const handleNextCustomer = () => {
         if (customerList.length === 0) return;
