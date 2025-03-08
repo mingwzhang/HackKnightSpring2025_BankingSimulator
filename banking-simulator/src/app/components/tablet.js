@@ -1,7 +1,7 @@
 function Tablet({customerName, accountNumber, accountBalance}) {
   return (
     <div className="bg-blue-400 h-full w-full font-[ZZZFont]">
-      <div className="bg-blue-200 overflow-hidden">
+      <div className="bg-blue-200 overflow-hidden text-black">
         <div className="flex justify-center p-1 text-xl">
           Name: {customerName}
         </div>
