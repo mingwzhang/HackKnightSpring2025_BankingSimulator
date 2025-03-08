@@ -29,8 +29,8 @@ export default function Home() {
           </div>
 
           {/* Document System (Transparent Light Blue Box at Bottom Right of Desk) */}
-          <div className="absolute bottom-50 right-4 w-[40%] h-[45%] opacity-75 border-2 border-white rounded-2xl overflow-hidden shadow-md flex">
-            <Tablet/>
+          <div className="absolute bottom-37 right-0 w-[35%] h-[42%] opacity-75 border-4 border-white rounded-2xl overflow-hidden shadow-md flex">
+            <Tablet accountNumber={123412341234}/>
           </div>
         </div>
 
