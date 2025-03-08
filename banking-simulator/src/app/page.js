@@ -1,10 +1,30 @@
 "use client";
 import CustomerBooth from "./components/CustomerBooth";
 import DialogueBox from "./components/dialoguebox";
-
 import Tablet from "./components/tablet";
+import { useState, useEffect} from 'react'
 
 export default function Home() {
+
+      const key = process.env.NEXT_PUBLIC_API_KEY
+      //Get ALL Customers      FOR MAIN AND FOR ROTATION OF CUSTOMERS
+      const [customerList, setCustomerList] = useState([]);
+      const [currentCustomer, setCurrentCustomer] = useState(0);
+    
+      useEffect(() => {
+          fetch(`http://api.nessieisreal.com/customers?key=${key}`)
+          .then(res => res.json())
+          .then(data => setCustomerList(data))
+          .catch(err => console.log(err))
+      },[])
+
+      const handleNextCustomer = () => {
+        if (customerList.length === 0) return;
+        console.log(currentCustomer)
+        setCurrentCustomer((currentCustomer + 1) % customerList.length); //Loops back to first customer
+      };
+      
+
     return (
 <div className="flex items-center justify-center min-h-screen py-50 bg-gray-100">
         
@@ -19,7 +39,7 @@ export default function Home() {
           </div>
         </div>
           {/* Inspector's Booth (Blue Holographic Screen) */}
-          <CustomerBooth />
+          <CustomerBooth parentFunction={handleNextCustomer}/>
 
           {/* Instruction Panel (Right of Booth, No Gap, Aligned at the Top) */}
           <div className="absolute left-[calc(75%)] top-20 w-[15%] h-[25%] bg-yellow-300 shadow-md flex items-center justify-center">
@@ -33,9 +53,13 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Handles Next customer logic */}
+          <button onClick={handleNextCustomer} className="w-20 text-black"> NEXT ! </button>
+          <div className ="text-black"> {customerList[currentCustomer]?._id} </div>
+
           {/* Document System (Transparent Light Blue Box at Bottom Right of Desk) */}
           <div className="absolute bottom-37 right-0 w-[35%] h-[42%] opacity-75 border-4 border-white rounded-2xl overflow-hidden shadow-md flex">
-            <Tablet accountNumber={1234123412341234}/>
+            <Tablet customerId={customerList[currentCustomer]} apiKey={key}/>
           </div>
         </div>
 

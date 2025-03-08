@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-export default function CustomerBooth() {
+export default function CustomerBooth({ parentFunction }) {
   // "hidden" means the customer is centered but invisible;
   // "centerVisible" means the customer is visible at center.
   const [customerState, setCustomerState] = useState("hidden");
@@ -27,6 +27,7 @@ export default function CustomerBooth() {
   // Trigger the enter (fade-in + walk in) animation with bob effect
   const moveToCenter = () => {
     if (!animating && customerState === "hidden") {
+      parentFunction()
       setAnimating(true);
       setAnimationType("enter");
     }
