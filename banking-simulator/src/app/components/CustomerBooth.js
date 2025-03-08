@@ -1,7 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function CustomerBooth({ parentFunction }) {
+export default function CustomerBooth({ parentFunction, parentFunction2 }) {
+  // "hidden" means the customer is centered but invisible;
+  // "centerVisible" means the customer is visible at center.
+
   const [customerState, setCustomerState] = useState("hidden");
   const [animating, setAnimating] = useState(false);
   const [animationType, setAnimationType] = useState(null);
@@ -24,7 +27,12 @@ export default function CustomerBooth({ parentFunction }) {
 
   const moveToCenter = () => {
     if (!animating && customerState === "hidden") {
-      parentFunction();
+
+      parentFunction()
+      setTimeout(() => {
+        parentFunction2(1)
+      }, 1700);
+
       setAnimating(true);
       setAnimationType("enter");
     }
@@ -32,6 +40,7 @@ export default function CustomerBooth({ parentFunction }) {
 
   const moveToRight = () => {
     if (!animating && customerState === "centerVisible") {
+      parentFunction2(0)
       setAnimating(true);
       setAnimationType("exit");
     }
