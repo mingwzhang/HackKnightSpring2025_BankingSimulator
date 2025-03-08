@@ -1,7 +1,7 @@
 "use client";
 import CustomerBooth from "./components/CustomerBooth";
+import DialogueBox from "./components/dialoguebox";
 import Tablet from "./components/tablet";
-
 import { useState, useEffect} from 'react'
 
 export default function Home() {
@@ -33,7 +33,11 @@ export default function Home() {
           id="game-container" 
           className="relative w-[1200px] h-[800px] scale-100 md:scale-90 lg:scale-75 xl:scale-120 transition-transform duration-300 flex flex-col items-center"
         >
-          
+        <div className="flex justify-center">
+          <div className="flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-75 mt-0 z-10">
+            <DialogueBox/>
+          </div>
+        </div>
           {/* Inspector's Booth (Blue Holographic Screen) */}
           <CustomerBooth parentFunction={handleNextCustomer}/>
 
