@@ -1,7 +1,19 @@
 # Hackathon_HackKnightSpring2025
 This is a group hackathon project for Hack Knight Spring 2025 event
 
-## Live Demo 
-[Check out the live version here! 🚀](https://lowercasetwo.netlify.app/)
+# Bank Teller Simulator
 
-https://www.youtube.com/watch?v=feHkusfR7-s&t=100s
+🚨 **Important Note:**  
+For the best experience, run the **full API version** locally:  
+```sh
+cd banking-simulator
+npm install
+npm run dev
+
+
+
+
+
+## Live Demo (Simplified Version)
+You can try the deployed version (with no API) here:
+🔗 lowercasetwo.netlify.app
