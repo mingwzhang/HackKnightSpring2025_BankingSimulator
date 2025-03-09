@@ -1,3 +1,5 @@
+/*
+
 'use client'
 import { useState, useEffect } from 'react'
 
@@ -7,7 +9,7 @@ export default function api(){
 
     const key = process.env.NEXT_PUBLIC_API_KEY
 
-    /* NOTE THIS IS AN API LIBRARY, CONSIDER READING THROUGH IT TO SEE WHAT IT DOES, NOT MEANT TO WORK BY ITSELF */
+    //NOTE THIS IS AN API LIBRARY, CONSIDER READING THROUGH IT TO SEE WHAT IT DOES, NOT MEANT TO WORK BY ITSELF
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -145,7 +147,7 @@ export default function api(){
     return(
         <div className="h-[1000px] w-[1000px]">
 
-            <button onClick={() => getCustomerInfoClickHandler(/* Insert the id customer*/)} className="bg-stone-500 w-20">
+            <button onClick={() => getCustomerInfoClickHandler( //Insert the id customer)} className="bg-stone-500 w-20">
                 GET CUSTOMER BUTTON
             </button>
             <div className="text-white">
@@ -183,3 +185,4 @@ export default function api(){
         </div>
     )
 }
+    */

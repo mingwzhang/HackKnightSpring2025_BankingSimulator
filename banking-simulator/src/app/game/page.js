@@ -18,19 +18,11 @@ export default function Home() {
   const [textAdvance, nextText] = useState(0);
 
   useEffect(() => {
-    const fetchCustomersList = () => {
-      fetch(`http://api.nessieisreal.com/customers?key=${key}`)
-        .then(res => res.json())
-        .then(data => { setCustomerList(data); console.log("Customer list updated") })
-        .catch(err => console.log(err))
-    }
-
-    fetchCustomersList();
-
-    const timer = setInterval(fetchCustomersList, 10000);  //Update every 10 second
-    return () => clearInterval(timer); //clean up
-  }, [])
-
+    // Instead of fetching, use hard-coded customer data (using chat.json)
+    setCustomerList(chat);
+    console.log("Customer list set from hard-coded data");
+  }, []);
+  
 
   const handleNextCustomer = () => {
     if (customerList.length === 0) return;

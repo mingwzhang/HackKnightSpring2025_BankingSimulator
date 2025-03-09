@@ -1,135 +1,88 @@
-'use client'
-import { useState, useEffect } from 'react'
-import chat from "../dialogue/chat.json"
+'use client';
+import { useState, useEffect } from 'react';
+import chat from "../dialogue/chat.json";
 
+export default function Tablet({ customerId, currentCustomer, customerRequest, requestType, setCustomerMood, buttonsDisabled, setButtonsDisabled }) {
+  
+  // Hardcoded account information based on customer
+  const hardcodedAccounts = {
+    "Alex": { account_number: "123456789", balance: 1000 },
+    "Cassandra": { account_number: "987654321", balance: 500 },
+    "Hector": { account_number: "555333222", balance: 2000 },
+    "Tom": { account_number: "111222333", balance: 1500 },
+    "Reder": { account_number: "999888777", balance: 2500 },
+    "Aramaki": { account_number: "777666555", balance: 4000 },
+    "Veronica": { account_number: "666555444", balance: 340 },
+    "Tim": { account_number: "444333222", balance: 210 },
+    "Grace": { account_number: "333222111", balance: 2000 },
+    "Skel": { account_number: "222111000", balance: 3000 },
+    "John": { account_number: "101010101", balance: 100 },
+    "Ellen": { account_number: "202020202", balance: 300 },
+    "Kim": { account_number: "303030303", balance: 500 },
+  };
 
-export default function Tablet({ customerId, apiKey, currentCustomer, customerRequest, requestType, setCustomerMood, buttonsDisabled, setButtonsDisabled }) {
-
-  //Get customer account info for tablet        ONCE THE TABLET HAS CUSTOMER'S ID, FIND INFO TO THEIR ACCOUNT
-  const [customerAccount, setCustomerAccount] = useState([])
+  const [customerAccount, setCustomerAccount] = useState(null);
   const [inputAmount, setInputAmount] = useState(0);
 
+  // When a new customer arrives, load their hardcoded account info
   useEffect(() => {
-
-    if (!customerId?._id) {                                //If there are no customerid api will not call
-      console.log("No Customer ID")
-      setCustomerAccount([]);    //Empty the list
+    if (!currentCustomer) {
+      setCustomerAccount(null);
       return;
     }
 
-    fetch(`http://api.nessieisreal.com/customers/${customerId._id}/accounts?key=${apiKey}`)
-      .then(res => res.json())
-      .then(data => setCustomerAccount(data))
-      .catch(err => console.log(err))
-  }, [customerId])
+    const customerName = chat[currentCustomer]?.first_name;
+    if (customerName && hardcodedAccounts[customerName]) {
+      setCustomerAccount(hardcodedAccounts[customerName]);
+    }
+  }, [currentCustomer]);
 
-  const withdrawMoney = (customerId, amount) => {
-    fetch(`http://api.nessieisreal.com/accounts/${customerId}/withdrawals?key=${apiKey}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        medium: "balance",
-        transaction_date: new Date().toISOString(),
-        amount: amount,
-        description: "Withdrawal from account"
-      })
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Failed to withdraw: ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log("Withdrawal successful:", data);
-      })
-      .catch(error => {
-        console.error("Error making withdrawal:", error);
-      });
-  };
-
-  const depositMoney = (customerId, amount) => {
-
-    console.log("Inside Depo", customerId, amount)
-    fetch(`http://api.nessieisreal.com/accounts/${customerId}/deposits?key=${apiKey}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        medium: "balance",
-        transaction_date: new Date().toISOString(),
-        amount: amount,
-        description: "deposit from account"
-      })
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Failed to withdraw: ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log("deposit successful:", data);
-      })
-      .catch(error => {
-        console.error("Error making deposit:", error);
-      });
-  };
-
+  // Simulate withdrawing money
   const handleWithdraw = () => {
-    setInputAmount("");
-    console.log("Withdraw Clicked");
-    // Disable buttons immediately after clicking
-    setButtonsDisabled(true);
-    if (customerRequest !== inputAmount || requestType !== "withdraw") {
-      console.log("Customer is Angry");
+    if (!customerAccount || inputAmount <= 0) return;
+
+    if (inputAmount !== customerRequest || requestType !== "withdraw") {
       setCustomerMood("angry");
       return;
     }
-    const customerBalance = customerAccount[0]?.balance;
-    if (customerBalance && inputAmount > customerBalance) {
+
+    if (inputAmount > customerAccount.balance) {
       console.log("Insufficient funds");
       return;
     }
+
     setCustomerMood("happy");
-    console.log("Withdrawing Amount: ", inputAmount);
-    withdrawMoney(customerAccount[0]?._id, inputAmount);
+    setCustomerAccount(prev => ({ ...prev, balance: prev.balance - inputAmount }));
   };
 
+  // Simulate depositing money
   const handleDeposit = () => {
-    // Disable buttons immediately after clicking
-    setInputAmount("");
-    setButtonsDisabled(true);
-    if (customerRequest !== inputAmount || requestType !== "deposit") {
-      console.log("Customer is Angry");
+    if (!customerAccount || inputAmount <= 0) return;
+
+    if (inputAmount !== customerRequest || requestType !== "deposit") {
       setCustomerMood("angry");
       return;
     }
+
     setCustomerMood("happy");
-    console.log("Depositing amount: ", inputAmount);
-    depositMoney(customerAccount[0]?._id, inputAmount);
+    setCustomerAccount(prev => ({ ...prev, balance: prev.balance + inputAmount }));
   };
 
-  if(!currentCustomer){
-    return <div className="flex bg-white w-full h-full text-black text-3xl justify-center text-center items-center">This error only occurs with Alex, and we don't know why. Just click the emergency button. </div>
+  if (!customerAccount) {
+    return <div className="flex bg-white w-full h-full text-black text-3xl justify-center text-center items-center">No Account Data Available</div>;
   }
-  
+
   return (
     <div className="bg-blue-400 h-full w-full font-[ZZZFont]">
-
       <div className="bg-blue-200 overflow-hidden text-black">
         <div className="flex justify-center p-1 text-xl">
-          {/* Name: {customerId?.first_name} {" "} {customerId?.last_name} */}
-          Name: {chat[currentCustomer].first_name} {chat[currentCustomer].last_name}
+          Name: {chat[currentCustomer]?.first_name} {chat[currentCustomer]?.last_name}
         </div>
         <div className="flex justify-center p-1 text-xl">
-          Account #: {customerAccount[0]?.account_number}
+          Account #: {customerAccount.account_number}
         </div>
         <div className="flex justify-center p-1 text-xl">
-          Balance: ${customerAccount[0]?.balance}
+          Balance: ${customerAccount.balance}
         </div>
       </div>
 
@@ -137,24 +90,40 @@ export default function Tablet({ customerId, apiKey, currentCustomer, customerRe
         <button
           onClick={handleWithdraw}
           disabled={buttonsDisabled}
-          className={`bg-blue-600 text-white rounded-md text-2xl p-3 my-2 mt-3 mx-2 disabled:opacity-50 ${buttonsDisabled ? "" : "hover:cursor-pointer hover:brightness-125"
-            }`}
+          className={`bg-blue-600 text-white rounded-md text-2xl p-3 my-2 mt-3 mx-2 disabled:opacity-50 ${buttonsDisabled ? "" : "hover:cursor-pointer hover:brightness-125"}`}
         >
           Withdraw
         </button>
         <button
           onClick={handleDeposit}
           disabled={buttonsDisabled}
-          className={`bg-blue-600 text-white rounded-md text-2xl p-3 mb-2 mx-2 disabled:opacity-50 ${buttonsDisabled ? "" : "hover:cursor-pointer hover:brightness-125"
-            }`}
+          className={`bg-blue-600 text-white rounded-md text-2xl p-3 mb-2 mx-2 disabled:opacity-50 ${buttonsDisabled ? "" : "hover:cursor-pointer hover:brightness-125"}`}
         >
           Deposit
         </button>
+      </div>
+
+      <div className="flex justify-center rounded-xl items-center overflow-hidden text-3xl mt-2">
+        $<input
+  type="text"  // Use "text" to prevent leading zeros, then validate input
+  value={inputAmount === 0 ? "" : inputAmount}  // Show empty initially
+  onChange={(e) => {
+    let value = e.target.value;
+
+    // Prevent non-numeric input
+    if (!/^\d*$/.test(value)) return;
+
+    // Prevent leading zeros (except if value is empty)
+    if (value.startsWith("0") && value.length > 1) {
+      value = value.replace(/^0+/, '');
+    }
+
+    setInputAmount(value === "" ? "" : Number(value));
+  }}
+  className="w-[70%] h-[55px] bg-white ml-1 rounded-xl p-2 text-black"
+/>
 
       </div>
-      <div className="flex justify-center rounded-xl items-center overflow-hidden text-3xl mt-2">
-        $<input type="number" min={0} onChange={(e) => setInputAmount(Number(e.target.value))} className="w-[70%] h-[55px] bg-white ml-1 rounded-xl p-2 text-black"></input>
-      </div>
     </div>
-  )
+  );
 }
