@@ -12,7 +12,7 @@ export default function Home() {
       //Get ALL Customers      FOR MAIN AND FOR ROTATION OF CUSTOMERS
       const [customerList, setCustomerList] = useState([]);
       const [currentCustomer, setCurrentCustomer] = useState(0);
-      const [customerExists, customerArrival] = useState(0);
+      const [customerExists, customerArrival] = useState(2);
       const [customerMood, setCustomerMood] = useState("");
     
       useEffect(() => {
@@ -56,7 +56,7 @@ export default function Home() {
           className="relative w-[1200px] h-[800px] scale-100 md:scale-90 lg:scale-75 xl:scale-120 transition-transform duration-300 flex flex-col items-center"
         >
         <div className="flex justify-center">
-          <div className={customerExists ? "flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-[80%] mt-0 z-10 animate-fadeIn"
+          <div className={customerExists == 2 ? "hidden" : customerExists ? "flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-[80%] mt-0 z-10 animate-fadeIn"
             : "flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-75 mt-0 z-10 animate-fadeOut"
           }>
             <DialogueBox/>
@@ -86,7 +86,7 @@ export default function Home() {
           <div className ="text-black"> {customerList[currentCustomer]?._id} </div>
 
           {/* Document System (Transparent Light Blue Box at Bottom Right of Desk) */}
-          <div className={customerExists ? "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeUp" 
+          <div className={customerExists == 2 ? "hidden" : customerExists ? "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeUp" 
           : "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeOut"}>
             <Tablet customerId={customerList[currentCustomer]} apiKey={key} customerRequest={100} requestType={"deposit"}setCustomerMood={setCustomerMood}/>
           </div>
