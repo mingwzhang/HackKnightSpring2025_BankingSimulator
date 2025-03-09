@@ -74,11 +74,12 @@ export default function Home() {
         customerMood={customerMood} 
         setCustomerMood={setCustomerMood}
         setButtonsDisabled={setButtonsDisabled}
+        customerSprite={chat[currentCustomer].image}
       />
 
         {/* Instruction Panel (Now with perfectly scaled note.png) */}
         <div
-          className="absolute left-[calc(75%)] top-20 w-[20%] h-[35%] shadow-md flex items-center justify-center"
+          className="absolute left-[calc(76%)] top-20 w-[20%] h-[35%] shadow-md flex items-center justify-center"
           style={{
             backgroundImage: "url('/img/note.png')",
             backgroundSize: "100% 100%",  // Ensures it perfectly fits the container

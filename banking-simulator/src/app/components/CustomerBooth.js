@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function CustomerBooth({ parentFunction, parentFunction2, customerMood, setCustomerMood, buttonsDisabled, setButtonsDisabled }) {
+export default function CustomerBooth({ parentFunction, parentFunction2, customerMood, setCustomerMood, buttonsDisabled, setButtonsDisabled, customerSprite }) {
   // "hidden" means the customer is centered but invisible;
   // "centerVisible" means the customer is visible at center.
   const [customerState, setCustomerState] = useState("hidden");
@@ -26,7 +26,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
   const [currentCustomer, setCurrentCustomer] = useState(getRandomCustomer());
 
   // Use the same image for both enter and exit animations.
-  const customerImage = `/img/customers/customer${currentCustomer}.png`;
+  const customerImage = `/img/customers/${customerSprite}`;
 
   const handleAnimationEnd = (e) => {
     if (e.animationName === "enterAnimation") {
@@ -104,7 +104,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       {/* Booth Container */}
       <div
         id="game-container"
-        className="relative w-[600px] h-[400px] shadow-lg rounded-xl flex items-center justify-center overflow-hidden border-5 border-blue-500"
+        className="relative w-[600px] h-[400px] shadow-lg rounded-xl flex items-center justify-center overflow-hidden border-5 border-stone-700"
         style={{
           backgroundImage: 'url(/img/bank_background.png)',
           backgroundSize: "cover",
@@ -139,7 +139,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       </div>
 
       {/* Control Buttons */}
-      <div className="mt-4 flex gap-4 items-center">
+      <div className="my-2 flex gap-4 items-center clip-path:polygon(0_0,100%_0%,49%_52%,0_100%)">
         <button
           className="hidden px-4 py-2 bg-green-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-green-600"
           onClick={() => {
