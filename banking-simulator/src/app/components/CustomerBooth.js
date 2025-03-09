@@ -1,13 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function CustomerBooth({ parentFunction, parentFunction2, customerMood, setCustomerMood, setButtonsDisabled }) {
+export default function CustomerBooth({ parentFunction, parentFunction2, customerMood, setCustomerMood, buttonsDisabled, setButtonsDisabled }) {
   // "hidden" means the customer is centered but invisible;
   // "centerVisible" means the customer is visible at center.
   const [customerState, setCustomerState] = useState("hidden");
   const [animating, setAnimating] = useState(false);
   const [animationType, setAnimationType] = useState(null);
   const [emote, setEmote] = useState(null);
+  // Local state to control whether the emote (Satisfied/Mad) buttons are clickable
+  const [emoteButtonsDisabled, setEmoteButtonsDisabled] = useState(false);
 
   const customerImage =
     animationType === "exit" ? "/img/Customer2.png" : "/img/Customer.png";
@@ -26,10 +28,12 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
     }
   };
 
-  // Modified moveToCenter: now explicitly re-enables deposit/withdraw buttons
+  // When Move to Center is clicked, re-enable all interactive buttons.
   const moveToCenter = () => {
     if (!animating && customerState === "hidden") {
-      setButtonsDisabled(false); // Ensure deposit/withdraw buttons are clickable
+      // Re-enable deposit/withdraw buttons and emote buttons for the new customer
+      setButtonsDisabled(false);
+      setEmoteButtonsDisabled(false);
       parentFunction();
       setTimeout(() => {
         parentFunction2(1);
@@ -39,13 +43,14 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
     }
   };
 
-  // Auto exit remains unchanged: it doesn't re-enable the buttons.
+  // Auto-trigger exit animation. Note: the Move to Right button is only enabled when the customer is centered
+  // and no interactive button is active.
   const moveToRight = () => {
     if (!animating && customerState === "centerVisible") {
       parentFunction2(0);
       setAnimating(true);
       setAnimationType("exit");
-      // Do not re-enable buttons here; they remain disabled during exit
+      // Do not re-enable buttons here; they remain disabled during the exit process.
     }
   };
 
@@ -61,22 +66,17 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       : { left: "124px", bottom: "-10px", opacity: 0 }
     : {};
 
-  const handleEmote = (type) => {
-    console.log("Inside CustomerBooth.js :", customerMood);
-    setEmote(type);
-  };
-
-  // When customerMood is "happy" or "angry", trigger the emote animation.
-  // After 3 seconds, reset the mood, disable buttons, and auto-trigger exit animation.
+  // When customerMood becomes "happy" or "angry" (triggered by the emote buttons), start the emote animation.
+  // After 3 seconds, reset the mood, disable deposit/withdraw buttons, and auto-trigger the exit animation.
   useEffect(() => {
     if (customerMood === "happy" || customerMood === "angry") {
-      setEmote(customerMood); // Start emote animation immediately
+      setEmote(customerMood); // Start the emote animation immediately
 
       const timer = setTimeout(() => {
         setEmote(null);         // Reset local emote after 3 seconds
         setCustomerMood("");      // Reset parent's mood to neutral
-        setButtonsDisabled(true); // Disable deposit/withdraw buttons during exit process
-        moveToRight();            // Auto trigger exit animation (which will eventually load the next customer)
+        setButtonsDisabled(true); // Disable deposit/withdraw buttons during the exit process
+        moveToRight();            // Auto-trigger exit animation (which will eventually load the next customer)
       }, 3000);
 
       return () => clearTimeout(timer);
@@ -131,31 +131,46 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
 
       {/* Control Buttons */}
       <div className="mt-4 flex gap-4 items-center">
+        {/* Satisfied Button */}
         <button
-          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50"
-          onClick={() => handleEmote("happy")}
-          disabled={emote !== null}
+          className="px-4 py-2 bg-green-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-green-600"
+          onClick={() => {
+            setCustomerMood("happy");
+            setEmoteButtonsDisabled(true);
+            setButtonsDisabled(true);
+          }}
+          disabled={emoteButtonsDisabled || customerState !== "centerVisible" || animating}
         >
           Satisfied
         </button>
+        {/* Mad Button */}
         <button
-          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50"
-          onClick={() => handleEmote("angry")}
-          disabled={emote !== null}
+          className="px-4 py-2 bg-red-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-red-600"
+          onClick={() => {
+            setCustomerMood("angry");
+            setEmoteButtonsDisabled(true);
+            setButtonsDisabled(true);
+          }}
+          disabled={emoteButtonsDisabled || customerState !== "centerVisible" || animating}
         >
           Mad
         </button>
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-blue-600"
           onClick={moveToCenter}
           disabled={animating || customerState !== "hidden"}
         >
           Move to Center
         </button>
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-blue-600"
           onClick={moveToRight}
-          disabled={animating || customerState !== "centerVisible"}
+          disabled={
+            animating ||
+            customerState !== "centerVisible" ||
+            emoteButtonsDisabled ||
+            buttonsDisabled
+          }
         >
           Move to Right
         </button>
