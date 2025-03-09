@@ -127,7 +127,7 @@ export default function Tablet({ customerId , apiKey, customerRequest, requestTy
         <button onClick={handleDeposit} className="bg-blue-600 text-white rounded-md text-2xl p-3 hover:cursor-pointer hover:brightness-125 mb-2 mx-2">Deposit</button>
       </div>
       <div className="flex justify-center rounded-xl items-center overflow-hidden text-3xl mt-2">
-        $<input type="number" min={0} value={inputAmount} onChange={(e) => setInputAmount(Number(e.target.value))} className=" w-[70%] h-[55px] bg-white ml-1 rounded-xl"></input>
+        $<input type="number" min={0} onChange={(e) => setInputAmount(Number(e.target.value))} className=" w-[70%] h-[55px] bg-white ml-1 rounded-xl"></input>
       </div>
     </div>
   )
