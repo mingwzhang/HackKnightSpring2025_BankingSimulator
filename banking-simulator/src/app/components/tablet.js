@@ -2,7 +2,7 @@
 import { useState, useEffect} from 'react'
 
 
-export default function Tablet({ customerId , apiKey, customerRequest, requestType, setCustomerMood}) {
+export default function Tablet({ customerId, apiKey, customerRequest, requestType, setCustomerMood, buttonsDisabled, setButtonsDisabled }) {
 
       //Get customer account info for tablet        ONCE THE TABLET HAS CUSTOMER'S ID, FIND INFO TO THEIR ACCOUNT
     const [customerAccount, setCustomerAccount] = useState([])
@@ -79,32 +79,36 @@ export default function Tablet({ customerId , apiKey, customerRequest, requestTy
   };
 
   const handleWithdraw = () => {
-    console.log("Withdraw Clicked")
-    if (customerRequest !== inputAmount || requestType !== "withdraw"){
-      console.log("Customer is Angry")
-      setCustomerMood("angry")
-      return
+    console.log("Withdraw Clicked");
+    // Disable buttons immediately after clicking
+    setButtonsDisabled(true);
+    if (customerRequest !== inputAmount || requestType !== "withdraw") {
+      console.log("Customer is Angry");
+      setCustomerMood("angry");
+      return;
     }
-    const customerBalance = customerAccount[0]?.balance
-    if (customerBalance && inputAmount > customerBalance) {      //If their requested amount is greater allow deny
-      console.log("Insufficient funds")
-      return
+    const customerBalance = customerAccount[0]?.balance;
+    if (customerBalance && inputAmount > customerBalance) {
+      console.log("Insufficient funds");
+      return;
     }
-    setCustomerMood("happy")
-    console.log("Withdrawing Amount: ", inputAmount)
+    setCustomerMood("happy");
+    console.log("Withdrawing Amount: ", inputAmount);
     withdrawMoney(customerAccount[0]?._id, inputAmount);
-  }
+  };
 
   const handleDeposit = () => {
-    if (customerRequest !== inputAmount || requestType !== "deposit"){
-      console.log("Customer is Angry")
-      setCustomerMood("angry")
-      return
+    // Disable buttons immediately after clicking
+    setButtonsDisabled(true);
+    if (customerRequest !== inputAmount || requestType !== "deposit") {
+      console.log("Customer is Angry");
+      setCustomerMood("angry");
+      return;
     }
-    setCustomerMood("happy")
-    console.log("Depositing amount :" , inputAmount)
+    setCustomerMood("happy");
+    console.log("Depositing amount: ", inputAmount);
     depositMoney(customerAccount[0]?._id, inputAmount);
-  }
+  };
 
   
   return (
@@ -123,8 +127,20 @@ export default function Tablet({ customerId , apiKey, customerRequest, requestTy
       </div>
 
       <div className="flex flex-col justify-center w-full">
-        <button onClick={handleWithdraw} className="bg-blue-600 text-white rounded-md text-2xl p-3 hover:cursor-pointer hover:brightness-125 my-2 mt-3 mx-2">Withdraw</button>
-        <button onClick={handleDeposit} className="bg-blue-600 text-white rounded-md text-2xl p-3 hover:cursor-pointer hover:brightness-125 mb-2 mx-2">Deposit</button>
+      <button 
+          onClick={handleWithdraw} 
+          className="bg-blue-600 text-white rounded-md text-2xl p-3 hover:cursor-pointer hover:brightness-125 my-2 mt-3 mx-2"
+          disabled={buttonsDisabled}
+        >
+          Withdraw
+        </button>
+        <button 
+          onClick={handleDeposit} 
+          className="bg-blue-600 text-white rounded-md text-2xl p-3 hover:cursor-pointer hover:brightness-125 mb-2 mx-2"
+          disabled={buttonsDisabled}
+        >
+          Deposit
+        </button>
       </div>
       <div className="flex justify-center rounded-xl items-center overflow-hidden text-3xl mt-2">
         $<input type="number" min={0} onChange={(e) => setInputAmount(Number(e.target.value))} className=" w-[70%] h-[55px] bg-white ml-1 rounded-xl"></input>

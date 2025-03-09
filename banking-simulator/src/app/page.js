@@ -28,7 +28,7 @@ export default function Home() {
 
         {/* Improved "Start Game" Button with Color Indication on Hover */}
         <Link href="/game">
-          <button className="mt-8 px-8 py-4 bg-gray-100 border border-gray-300 text-gray-800 font-mono uppercase tracking-wider font-bold 
+          <button className="mt-8 px-8 py-4 bg-yellow-100 border border-gray-300 text-gray-800 font-mono uppercase tracking-wider font-bold 
                              shadow-[0_4px_0_0_#999] hover:shadow-[0_6px_0_0_#999] 
                              hover:bg-yellow-400 hover:text-black 
                              active:translate-y-1 active:shadow-[0_2px_0_0_#999] 
