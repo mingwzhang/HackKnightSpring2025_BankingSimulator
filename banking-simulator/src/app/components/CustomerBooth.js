@@ -11,8 +11,22 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
   // Local state to control whether the emote (Satisfied/Mad) buttons are clickable
   const [emoteButtonsDisabled, setEmoteButtonsDisabled] = useState(false);
 
-  const customerImage =
-    animationType === "exit" ? "/img/Customer2.png" : "/img/Customer.png";
+  // Helper to get a random customer index (0, 1, 2, or more). Ensures a new one if a previous value is provided.
+  const getRandomCustomer = (prev) => {
+    let newCustomer = Math.floor(Math.random() * 6);
+    if (prev !== undefined) {
+      while (newCustomer === prev) {
+        newCustomer = Math.floor(Math.random() * 6);
+      }
+    }
+    return newCustomer;
+  };
+
+  // Set initial customer randomly.
+  const [currentCustomer, setCurrentCustomer] = useState(getRandomCustomer());
+
+  // Use the same image for both enter and exit animations.
+  const customerImage = `/img/customers/customer${currentCustomer}.png`;
 
   const handleAnimationEnd = (e) => {
     if (e.animationName === "enterAnimation") {
@@ -23,15 +37,16 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       setAnimating(false);
       setAnimationType(null);
       setCustomerState("hidden");
+      // Update to a new random customer for the next appearance.
+      setCurrentCustomer(prev => getRandomCustomer(prev));
       // Once exit animation ends, trigger parent's next customer effect.
       parentFunction();
     }
   };
 
-  // When Move to Center is clicked, re-enable all interactive buttons.
+  // When Move to Center is clicked, re-enable interactive buttons and start the enter animation.
   const moveToCenter = () => {
     if (!animating && customerState === "hidden") {
-      // Re-enable deposit/withdraw buttons and emote buttons for the new customer
       setButtonsDisabled(false);
       setEmoteButtonsDisabled(false);
       parentFunction();
@@ -43,21 +58,18 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
     }
   };
 
-  // Auto-trigger exit animation. Note: the Move to Right button is only enabled when the customer is centered
-  // and no interactive button is active.
+  // Auto-trigger exit animation when conditions are met.
   const moveToRight = () => {
     if (!animating && customerState === "centerVisible") {
       parentFunction2(0);
       setAnimating(true);
       setAnimationType("exit");
-      // Do not re-enable buttons here; they remain disabled during the exit process.
     }
   };
 
   let wrapperAnimationClass = "";
   if (animating) {
-    wrapperAnimationClass =
-      animationType === "enter" ? "animate-enter" : "animate-exit";
+    wrapperAnimationClass = animationType === "enter" ? "animate-enter" : "animate-exit";
   }
 
   const restingWrapperStyle = !animating
@@ -66,19 +78,16 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       : { left: "124px", bottom: "-10px", opacity: 0 }
     : {};
 
-  // When customerMood becomes "happy" or "angry" (triggered by the emote buttons), start the emote animation.
-  // After 3 seconds, reset the mood, disable deposit/withdraw buttons, and auto-trigger the exit animation.
+  // When customerMood becomes "happy" or "angry", start the emote animation and auto-trigger exit after 3 seconds.
   useEffect(() => {
     if (customerMood === "happy" || customerMood === "angry") {
-      setEmote(customerMood); // Start the emote animation immediately
-
+      setEmote(customerMood);
       const timer = setTimeout(() => {
-        setEmote(null);         // Reset local emote after 3 seconds
-        setCustomerMood("");      // Reset parent's mood to neutral
-        setButtonsDisabled(true); // Disable deposit/withdraw buttons during the exit process
-        moveToRight();            // Auto-trigger exit animation (which will eventually load the next customer)
+        setEmote(null);
+        setCustomerMood("");
+        setButtonsDisabled(true);
+        moveToRight();
       }, 3000);
-
       return () => clearTimeout(timer);
     }
   }, [customerMood]);
@@ -131,7 +140,6 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
 
       {/* Control Buttons */}
       <div className="mt-4 flex gap-4 items-center">
-        {/* Satisfied Button */}
         <button
           className="px-4 py-2 bg-green-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-green-600"
           onClick={() => {
@@ -143,7 +151,6 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
         >
           Satisfied
         </button>
-        {/* Mad Button */}
         <button
           className="px-4 py-2 bg-red-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-red-600"
           onClick={() => {
