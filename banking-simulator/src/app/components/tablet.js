@@ -17,14 +17,14 @@ export default function Tablet({ customerId, apiKey, currentCustomer, customerRe
       return;
     }
 
-    fetch(`https://api.nessieisreal.com/customers/${customerId._id}/accounts?key=${apiKey}`)
+    fetch(`http://api.nessieisreal.com/customers/${customerId._id}/accounts?key=${apiKey}`)
       .then(res => res.json())
       .then(data => setCustomerAccount(data))
       .catch(err => console.log(err))
   }, [customerId])
 
   const withdrawMoney = (customerId, amount) => {
-    fetch(`https://api.nessieisreal.com/accounts/${customerId}/withdrawals?key=${apiKey}`, {
+    fetch(`http://api.nessieisreal.com/accounts/${customerId}/withdrawals?key=${apiKey}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -53,7 +53,7 @@ export default function Tablet({ customerId, apiKey, currentCustomer, customerRe
   const depositMoney = (customerId, amount) => {
 
     console.log("Inside Depo", customerId, amount)
-    fetch(`https://api.nessieisreal.com/accounts/${customerId}/deposits?key=${apiKey}`, {
+    fetch(`http://api.nessieisreal.com/accounts/${customerId}/deposits?key=${apiKey}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
