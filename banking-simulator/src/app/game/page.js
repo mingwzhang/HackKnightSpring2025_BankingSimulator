@@ -19,7 +19,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchCustomersList = () => {
-      fetch(`https://api.nessieisreal.com/customers?key=${key}`)
+      fetch(`http://api.nessieisreal.com/customers?key=${key}`)
         .then(res => res.json())
         .then(data => { setCustomerList(data); console.log("Customer list updated") })
         .catch(err => console.log(err))
