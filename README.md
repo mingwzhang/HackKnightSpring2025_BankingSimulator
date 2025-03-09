@@ -15,4 +15,5 @@ npm run dev
 
 **Live Demo (Simplified Version):**
 You can try the deployed version (with no API) here:
-🔗 lowercasetwo.netlify.app
+🔗 [lowercasetwo.netlify.app](https://lowercasetwo.netlify.app)
+
