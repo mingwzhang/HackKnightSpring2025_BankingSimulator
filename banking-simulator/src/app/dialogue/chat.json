@@ -4,90 +4,103 @@
     "last_name": "Test",
     "text": ["Hey", "I want to make a withdrawal of 100, I'm Alex btw"],
     "number": 100,
-    "transaction": "withdraw"
+    "transaction": "withdraw",
+    "image": "customer0.png"
   },
   {
     "first_name": "Cassandra",
     "last_name": "Meier",
-    "text": ["Hey", "I want to withdraw 100"],
+    "text": ["Greetings!", "I'd like to withdraw $100"],
     "number": 100,
-    "transaction": "withdraw"
+    "transaction": "withdraw",
+    "image": "customer0.png"
   },
   {
     "first_name": "Hector",
     "last_name": "Muller",
     "text": ["Hello", "I'm here to make a deposit of 400"],
     "number": 400,
-    "transaction": "deposit"
+    "transaction": "deposit",
+    "image": "customer0.png"
   },
   {
     "first_name": "Tom",
     "last_name": "Huey",
-    "text": ["Yo", "Bro", "I want to like", "make a withdrawal of 300 bro"],
+    "text": ["Ayo...", "Bruh...", "I want to like,", "make a withdrawal of three hundo bro..."],
     "number": 300,
-    "transaction": "withdraw"
+    "transaction": "withdraw",
+    "image": "customer4.png"
   },
   {
     "first_name": "Reder",
     "last_name": "Lorenz",
     "text": ["Hey.", "I need some cash", "a withdraw of 400 please"],
     "number": 400,
-    "transaction": "withdraw"
-  },
-  {
-    "first_name": "Aramaki",
-    "last_name": "Hoshino",
-    "text": ["Heeyyy", "I'm here to deposit", "I'm putting in 4000"],
-    "number": 4000,
-    "transaction": "deposit"
-  },
-  {
-    "first_name": "Veronica",
-    "last_name": "Telio",
-    "text": ["Heya~", "I'm going to need some cash", "Withdrawing 340 please!~"],
-    "number": 340,
-    "transaction": "withdraw"
-  },
-  {
-    "first_name": "Tim",
-    "last_name": "Tom",
-    "text": ["Ummm . . .", "Is this where I can take out cash?", "If so I want 210 please","I plan to buy a gift"],
-    "number": 210,
-    "transaction": "withdraw"
-  },
-  {
-    "first_name": "Grace",
-    "last_name": "Howard",
-    "text": ["Hello!", "I need funds for mechnical research", "I'm going to need to take out some money", "2000 will do"],
-    "number": 2000,
-    "transaction": "withdraw"
+    "transaction": "withdraw",
+    "image": "customer0.png"
   },
   {
     "first_name": "Skel",
     "last_name": "Bones",
     "text": ["Khe Khe Khe!", "I'm here to cash in my funds", "3000! straight in!"],
     "number": 3000,
-    "transaction": "deposit"
+    "transaction": "deposit",
+    "image": "customer2.png"
   },
   {
-    "first_name": "John",
-    "last_name": "Lee",
-    "text": ["I would like to make a deposit", "I boss just paid me", "Here is 100"],
-    "number": 100,
-    "transaction": "deposit"
+    "first_name": "Aramaki",
+    "last_name": "Hoshino",
+    "text": ["Heeyyy", "I'm here to deposit", "I'm putting in 4000"],
+    "number": 4000,
+    "transaction": "deposit",
+    "image": "customer0.png"
   },
   {
     "first_name": "Ellen",
     "last_name": "Joe",
     "text": ["deposit.", "300.", "thanks."],
     "number": 300,
-    "transaction": "deposit"
+    "transaction": "deposit",
+    "image": "Customer1.png"
+  },
+  {
+    "first_name": "Grace",
+    "last_name": "Howard",
+    "text": ["Hello!", "I need funds for mechnical research", "I'm going to need to take out some money", "2000 will do"],
+    "number": 2000,
+    "transaction": "withdraw",
+    "image": "customer3.png"
+  },
+  {
+    "first_name": "Veronica",
+    "last_name": "Telio",
+    "text": ["Heya~", "I'm going to need some cash", "Withdrawing 340 please!~"],
+    "number": 340,
+    "transaction": "withdraw",
+    "image": "customer3.png"
+  },
+  {
+    "first_name": "John",
+    "last_name": "Lee",
+    "text": ["I would like to make a deposit", "I boss just paid me", "Here is 100"],
+    "number": 100,
+    "transaction": "deposit",
+    "image": "customer2.png"
+  },
+  {
+    "first_name": "Tim",
+    "last_name": "Tom",
+    "text": ["Ummm . . .", "Is this where I can take out cash?", "If so I want 210 please","I plan to buy a gift"],
+    "number": 210,
+    "transaction": "withdraw",
+    "image": "customer5.png"
   },
   {
     "first_name": "Kim",
     "last_name": "JiHoon",
     "text": ["A withdraw please", "500 is good"],
     "number": 500,
-    "transaction": "withdraw"
+    "transaction": "withdraw",
+    "image": "customer5.png"
   }
 ]
