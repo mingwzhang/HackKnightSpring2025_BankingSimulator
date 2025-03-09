@@ -13,6 +13,7 @@ export default function Home() {
       const [customerList, setCustomerList] = useState([]);
       const [currentCustomer, setCurrentCustomer] = useState(0);
       const [customerExists, customerArrival] = useState(0);
+      const [customerMood, setCustomerMood] = useState("");
     
       useEffect(() => {
             const fetchCustomersList = () => {
@@ -59,7 +60,7 @@ export default function Home() {
           </div>
         </div>
           {/* Inspector's Booth (Blue Holographic Screen) */}
-          <CustomerBooth parentFunction={handleNextCustomer} parentFunction2={customerArrival}/>
+          <CustomerBooth parentFunction={handleNextCustomer} parentFunction2={customerArrival} customerMood={customerMood}/>
 
           {/* Instruction Panel (Right of Booth, No Gap, Aligned at the Top) */}
           <div className="absolute left-[calc(75%)] top-20 w-[15%] h-[25%] bg-yellow-300 shadow-md flex items-center justify-center">
@@ -76,7 +77,7 @@ export default function Home() {
           {/* Document System (Transparent Light Blue Box at Bottom Right of Desk) */}
           <div className={customerExists ? "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeUp" 
           : "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeOut"}>
-            <Tablet customerId={customerList[currentCustomer]} apiKey={key}/>
+            <Tablet customerId={customerList[currentCustomer]} apiKey={key} customerRequest={100} requestType={"deposit"}setCustomerMood={setCustomerMood}/>
           </div>
         </div>
 
