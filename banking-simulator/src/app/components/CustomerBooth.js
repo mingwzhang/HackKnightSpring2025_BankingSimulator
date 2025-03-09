@@ -22,12 +22,28 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
     return newCustomer;
   };
 
-  // Set initial customer randomly.
-  const [currentCustomer, setCurrentCustomer] = useState(getRandomCustomer());
+  const [currentCustomer, setCurrentCustomer] = useState(null);
 
-  // Use the same image for both enter and exit animations.
-  const customerImage = `/img/customers/customer${currentCustomer}.png`;
+  useEffect(() => {
+    setCurrentCustomer(getRandomCustomer());
+  }, []);
+  
+  const customerImage = currentCustomer !== null 
+    ? `/img/customers/customer${currentCustomer}.png` 
+    : null; // Avoid rendering an invalid image during SSR
+    
+  const playSound = (soundFile) => {
+    const audio = new Audio(`/mp3/${soundFile}`);
+    audio.play();
+  };
 
+  const playLoopingSound = (soundFile) => {
+    const audio = new Audio(`/mp3/${soundFile}`);
+    audio.loop = true;
+    audio.play();
+    return audio;
+  };
+  
   const handleAnimationEnd = (e) => {
     if (e.animationName === "enterAnimation") {
       setAnimating(false);
@@ -55,8 +71,12 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       }, 1700);
       setAnimating(true);
       setAnimationType("enter");
-    }
+      const footstepAudio = playLoopingSound("footstep.mp3");
+      setTimeout(() => {
+        footstepAudio.pause();
+      }, 2000);     }
   };
+  
 
   // Auto-trigger exit animation when conditions are met.
   const moveToRight = () => {
@@ -64,8 +84,12 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       parentFunction2(0);
       setAnimating(true);
       setAnimationType("exit");
-    }
+      const footstepAudio = playLoopingSound("footstep.mp3");
+      setTimeout(() => {
+        footstepAudio.pause();
+      }, 2000);    }
   };
+  
 
   let wrapperAnimationClass = "";
   if (animating) {
@@ -82,6 +106,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
   useEffect(() => {
     if (customerMood === "happy" || customerMood === "angry") {
       setEmote(customerMood);
+      playSound(customerMood === "happy" ? "happy.mp3" : "angry.mp3"); // Play the correct emote sound
       const timer = setTimeout(() => {
         setEmote(null);
         setCustomerMood("");
@@ -91,6 +116,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       return () => clearTimeout(timer);
     }
   }, [customerMood]);
+  
 
   const emoteImage =
     emote === "happy"
