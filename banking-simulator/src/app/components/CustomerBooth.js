@@ -133,7 +133,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       <div className="mt-4 flex gap-4 items-center">
         {/* Satisfied Button */}
         <button
-          className="px-4 py-2 bg-green-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-green-600"
+          className="hidden px-4 py-2 bg-green-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-green-600"
           onClick={() => {
             setCustomerMood("happy");
             setEmoteButtonsDisabled(true);
@@ -145,7 +145,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
         </button>
         {/* Mad Button */}
         <button
-          className="px-4 py-2 bg-red-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-red-600"
+          className="hidden px-4 py-2 bg-red-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-red-600"
           onClick={() => {
             setCustomerMood("angry");
             setEmoteButtonsDisabled(true);
@@ -160,10 +160,10 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
           onClick={moveToCenter}
           disabled={animating || customerState !== "hidden"}
         >
-          Move to Center
+          Next Customer
         </button>
         <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-blue-600"
+          className="px-4 py-2 bg-red-700 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-red-800"
           onClick={moveToRight}
           disabled={
             animating ||
@@ -172,7 +172,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
             buttonsDisabled
           }
         >
-          Move to Right
+          Emergency Button
         </button>
       </div>
 

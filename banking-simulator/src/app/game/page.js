@@ -36,6 +36,7 @@ export default function Home() {
     if (customerList.length === 0) return;
     console.log(currentCustomer)
     setCurrentCustomer((currentCustomer + 1) % customerList.length); //Loops back to first customer
+    nextText(0);
   };
 
 

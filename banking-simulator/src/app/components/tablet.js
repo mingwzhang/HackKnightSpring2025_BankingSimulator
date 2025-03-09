@@ -80,6 +80,7 @@ export default function Tablet({ customerId, apiKey, currentCustomer, customerRe
   };
 
   const handleWithdraw = () => {
+    setInputAmount("");
     console.log("Withdraw Clicked");
     // Disable buttons immediately after clicking
     setButtonsDisabled(true);
@@ -100,6 +101,7 @@ export default function Tablet({ customerId, apiKey, currentCustomer, customerRe
 
   const handleDeposit = () => {
     // Disable buttons immediately after clicking
+    setInputAmount("");
     setButtonsDisabled(true);
     if (customerRequest !== inputAmount || requestType !== "deposit") {
       console.log("Customer is Angry");
@@ -112,8 +114,9 @@ export default function Tablet({ customerId, apiKey, currentCustomer, customerRe
   };
 
   if(!currentCustomer){
-    return <div className="flex bg-white w-full h-full text-black text-3xl justify-center text-center items-center">You have encountered an error, please refresh the page.</div>
-}
+    return <div className="flex bg-white w-full h-full text-black text-3xl justify-center text-center items-center">This error only occurs with Alex, and we don't know why. Just click the emergency button. </div>
+  }
+  
   return (
     <div className="bg-blue-400 h-full w-full font-[ZZZFont]">
 
@@ -150,7 +153,7 @@ export default function Tablet({ customerId, apiKey, currentCustomer, customerRe
 
       </div>
       <div className="flex justify-center rounded-xl items-center overflow-hidden text-3xl mt-2">
-        $<input type="number" min={0} onChange={(e) => setInputAmount(Number(e.target.value))} className="w-[70%] h-[55px] bg-white ml-1 rounded-xl p-2"></input>
+        $<input type="number" min={0} onChange={(e) => setInputAmount(Number(e.target.value))} className="w-[70%] h-[55px] bg-white ml-1 rounded-xl p-2 text-black"></input>
       </div>
     </div>
   )
