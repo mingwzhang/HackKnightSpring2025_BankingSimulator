@@ -15,7 +15,7 @@ export default function api(){
     const [customerList, setCustomerList] = useState([])
 
     useEffect(() => {
-        fetch(`http://api.nessieisreal.com/customers?key=${key}`)
+        fetch(`https://api.nessieisreal.com/customers?key=${key}`)
         .then(res => res.json())
         .then(data => setCustomerList(data))
         .catch(err => console.log(err))
@@ -32,7 +32,7 @@ export default function api(){
             return;
         }
 
-        fetch(`http://api.nessieisreal.com/customers/${customerAccountId}/accounts?key=${key}`)
+        fetch(`https://api.nessieisreal.com/customers/${customerAccountId}/accounts?key=${key}`)
         .then(res => res.json())
         .then(data => setCustomerAccountId(data))
         .catch(err => console.log(err))
@@ -65,7 +65,7 @@ export default function api(){
             return;
         }
 
-        fetch(`http://api.nessieisreal.com/customers/${customerid}?key=${key}`)
+        fetch(`https://api.nessieisreal.com/customers/${customerid}?key=${key}`)
         .then(res => res.json())
         .then(data => setCustomerData(data))
         .catch(err => console.log(err))
@@ -88,7 +88,7 @@ export default function api(){
     //WITHDRAW API BASED ON _ID
 
     const withdrawMoney = (customerId, amount) => {
-        fetch(`http://api.nessieisreal.com/accounts/${customerId}/withdrawals?key=${key}`, {
+        fetch(`https://api.nessieisreal.com/accounts/${customerId}/withdrawals?key=${key}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -115,7 +115,7 @@ export default function api(){
     };
 
     const depositMoney = (customerId, amount) => {
-        fetch(`http://api.nessieisreal.com/accounts/${customerId}/deposits?key=${key}`, {
+        fetch(`https://api.nessieisreal.com/accounts/${customerId}/deposits?key=${key}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
