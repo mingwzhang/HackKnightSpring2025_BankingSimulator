@@ -13,13 +13,22 @@ export default function Home() {
       const [customerList, setCustomerList] = useState([]);
       const [currentCustomer, setCurrentCustomer] = useState(0);
       const [customerExists, customerArrival] = useState(0);
+      const [customerMood, setCustomerMood] = useState("");
     
       useEffect(() => {
-          fetch(`http://api.nessieisreal.com/customers?key=${key}`)
-          .then(res => res.json())
-          .then(data => setCustomerList(data))
-          .catch(err => console.log(err))
+            const fetchCustomersList = () => {
+              fetch(`http://api.nessieisreal.com/customers?key=${key}`)
+              .then(res => res.json())
+              .then(data => {setCustomerList(data); console.log("Customer list updated" )})
+              .catch(err => console.log(err))
+            }
+
+            fetchCustomersList();
+
+            const timer = setInterval(fetchCustomersList, 10000);  //Update every 10 second
+            return () => clearInterval(timer); //clean up
       },[])
+
 
       const handleNextCustomer = () => {
         if (customerList.length === 0) return;
@@ -54,7 +63,7 @@ export default function Home() {
           </div>
         </div>
           {/* Inspector's Booth (Blue Holographic Screen) */}
-          <CustomerBooth parentFunction={handleNextCustomer} parentFunction2={customerArrival}/>
+          <CustomerBooth parentFunction={handleNextCustomer} parentFunction2={customerArrival} customerMood={customerMood}/>
 
 {/* Instruction Panel (Now with perfectly scaled note.png) */}
 <div 
@@ -79,7 +88,7 @@ export default function Home() {
           {/* Document System (Transparent Light Blue Box at Bottom Right of Desk) */}
           <div className={customerExists ? "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeUp" 
           : "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeOut"}>
-            <Tablet customerId={customerList[currentCustomer]} apiKey={key}/>
+            <Tablet customerId={customerList[currentCustomer]} apiKey={key} customerRequest={100} requestType={"deposit"}setCustomerMood={setCustomerMood}/>
           </div>
         </div>
 

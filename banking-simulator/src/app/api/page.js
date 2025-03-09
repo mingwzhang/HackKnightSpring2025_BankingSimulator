@@ -84,6 +84,64 @@ export default function api(){
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //WITHDRAW API BASED ON _ID
+
+    const withdrawMoney = (customerId, amount) => {
+        fetch(`http://api.nessieisreal.com/accounts/${customerId}/withdrawals?key=${key}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                medium: "balance",
+                transaction_date: new Date().toISOString(),
+                amount: amount,
+                description: "Withdrawal from account"
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to withdraw: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Withdrawal successful:", data);
+        })
+        .catch(error => {
+            console.error("Error making withdrawal:", error);
+        });
+    };
+
+    const depositMoney = (customerId, amount) => {
+        fetch(`http://api.nessieisreal.com/accounts/${customerId}/deposits?key=${key}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                medium: "balance",
+                transaction_date: new Date().toISOString(),
+                amount: amount,
+                description: "deposit from account"
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to withdraw: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("deposit successful:", data);
+        })
+        .catch(error => {
+            console.error("Error making deposit:", error);
+        });
+    };
+
+
     return(
         <div className="h-[1000px] w-[1000px]">
 
@@ -107,6 +165,18 @@ export default function api(){
             </button>
             <div className="text-white">
                 {customerAccountId[0] ? customerAccountId[0]?.balance : "Nothing"}
+            </div>
+
+            <button onClick={() => withdrawMoney("67cbbe3e9683f20dd518d74b", 1000)} className="bg-stone-500 w-20">
+                WITHDRAW BUTTON
+            </button>
+            <div className="text-white">
+            </div>
+
+            <button onClick={() => depositMoney("67cbbe3e9683f20dd518d74b", 1000)} className="bg-stone-500 w-20">
+                DEPOSIT BUTTON
+            </button>
+            <div className="text-white">
             </div>
 
             Hello

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function CustomerBooth({ parentFunction, parentFunction2 }) {
+export default function CustomerBooth({ parentFunction, parentFunction2, customerMood}) {
   // "hidden" means the customer is centered but invisible;
   // "centerVisible" means the customer is visible at center.
 
@@ -59,6 +59,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2 }) {
     : {};
 
   const handleEmote = (type) => {
+    console.log("Inside CustomerBooth.js :", customerMood)
     setEmote(type);
   };
 
