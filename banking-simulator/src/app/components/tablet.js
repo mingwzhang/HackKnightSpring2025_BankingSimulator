@@ -1,8 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react'
+import chat from "../dialogue/chat.json"
 
 
-export default function Tablet({ customerId, apiKey, customerRequest, requestType, setCustomerMood, buttonsDisabled, setButtonsDisabled }) {
+export default function Tablet({ customerId, apiKey, currentCustomer, customerRequest, requestType, setCustomerMood, buttonsDisabled, setButtonsDisabled }) {
 
   //Get customer account info for tablet        ONCE THE TABLET HAS CUSTOMER'S ID, FIND INFO TO THEIR ACCOUNT
   const [customerAccount, setCustomerAccount] = useState([])
@@ -110,13 +111,16 @@ export default function Tablet({ customerId, apiKey, customerRequest, requestTyp
     depositMoney(customerAccount[0]?._id, inputAmount);
   };
 
-
+  if(!currentCustomer){
+    return <div className="flex bg-white w-full h-full text-black text-3xl justify-center text-center items-center">You have encountered an error, please refresh the page.</div>
+}
   return (
     <div className="bg-blue-400 h-full w-full font-[ZZZFont]">
 
       <div className="bg-blue-200 overflow-hidden text-black">
         <div className="flex justify-center p-1 text-xl">
-          Name: {customerId?.first_name} {" "} {customerId?.last_name}
+          {/* Name: {customerId?.first_name} {" "} {customerId?.last_name} */}
+          Name: {chat[currentCustomer].first_name} {chat[currentCustomer].last_name}
         </div>
         <div className="flex justify-center p-1 text-xl">
           Account #: {customerAccount[0]?.account_number}

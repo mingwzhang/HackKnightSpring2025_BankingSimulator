@@ -62,7 +62,7 @@ export default function Home() {
             : "flex absolute rounded-2xl overflow-hidden w-[300px] h-[230px] opacity-[85%] top-[-50px] left-44 z-10 animate-fadeOut"
           }>
             <button className="w-full h-full" onClick={() => {nextText((textAdvance+1) % chat[(currentCustomer) % customerList.length].text.length)}}>
-              <DialogueBox currentCustomer={currentCustomer % 3} textAdvance={textAdvance}/>
+              <DialogueBox currentCustomer={currentCustomer % 13} textAdvance={textAdvance}/>
             </button>
           </div>
         </div>
@@ -96,19 +96,20 @@ export default function Home() {
         <div className="text-black"> {customerList[currentCustomer]?._id} </div>
 
         {/* Document System (Transparent Light Blue Box at Bottom Right of Desk) */}
-      {/* Document System (Tablet) */}
-      <div className={customerExists == 2 ? "hidden" : customerExists ? "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeUp" 
-                      : "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeOut"}>
-        <Tablet 
-          customerId={customerList[currentCustomer]} 
-          apiKey={key} 
-          customerRequest={100} 
-          requestType={"deposit"}
-          setCustomerMood={setCustomerMood}
-          buttonsDisabled={buttonsDisabled}
-          setButtonsDisabled={setButtonsDisabled}
-        />
-      </div>
+        {/* Document System (Tablet) */}
+        <div className={customerExists == 2 ? "hidden" : customerExists ? "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeUp" 
+                        : "absolute bottom-37 right-0 w-[35%] h-[42%] border-4 border-white rounded-2xl overflow-hidden shadow-md flex animate-fadeOut"}>
+          <Tablet 
+            customerId={customerList[currentCustomer]} 
+            apiKey={key} 
+            customerRequest={chat[currentCustomer].number} 
+            requestType={chat[currentCustomer].transaction}
+            setCustomerMood={setCustomerMood}
+            buttonsDisabled={buttonsDisabled}
+            setButtonsDisabled={setButtonsDisabled}
+            currentCustomer={currentCustomer % customerList.length}
+          />
+        </div>
       </div>
 
       {/* Tailwind Custom Styles for Trapezoid */}
