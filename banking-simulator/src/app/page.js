@@ -6,10 +6,33 @@ import Image from "next/image";
 
 export default function Home() {
   const [showCredits, setShowCredits] = useState(false);
-  const [hoveringButton, setHoveringButton] = useState(false); // Track hover
+  const [hoveringButton, setHoveringButton] = useState(false);
 
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-[url('/img/lowercase2_logo_background.png')] bg-cover bg-center overflow-hidden">
+      
+      {/* Left GIF with custom position */}
+      <div className="fixed z-50" style={{ top: "150px", left: "-50px" }}>
+        <Image 
+          src="/img/dollar3d.gif" 
+          alt="3D Spinning Dollar" 
+          width={500}      
+          height={500}     
+          className="w-[800px] h-[500px] object-contain" 
+        />
+      </div>
+
+      {/* Right GIF with custom position */}
+      <div className="fixed z-50" style={{ top: "150px", right: "-50px" }}>
+        <Image 
+          src="/img/dollar3d.gif" 
+          alt="3D Spinning Dollar" 
+          width={500}      
+          height={500}     
+          className="w-[800px] h-[500px] object-contain" 
+        />
+      </div>
+
       {/* Main Content Container */}
       <div className="relative z-10 max-w-4xl w-full px-4 text-center">
         <h1
@@ -26,9 +49,9 @@ export default function Home() {
           <span className="font-semibold italic">"lower case two"</span>
         </p>
 
-        {/* Improved "Start Game" Button with Color Indication on Hover */}
+        {/* Start Game Button */}
         <Link href="/game">
-          <button className="mt-8 px-8 py-4 bg-gray-100 border border-gray-300 text-gray-800 font-mono uppercase tracking-wider font-bold 
+          <button className="mt-8 px-8 py-4 bg-yellow-100 border border-gray-300 text-gray-800 font-mono uppercase tracking-wider font-bold 
                              shadow-[0_4px_0_0_#999] hover:shadow-[0_6px_0_0_#999] 
                              hover:bg-yellow-400 hover:text-black 
                              active:translate-y-1 active:shadow-[0_2px_0_0_#999] 
@@ -38,14 +61,13 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* Credits Panel - Now Centered and Adjusted for Hide/Show */}
+      {/* Credits Panel */}
       <div
         className="fixed top-1/2 -translate-y-1/2 right-0 transition-all duration-300 flex items-center z-50"
         style={{
-          right: showCredits ? "0px" : hoveringButton ? "-410px" : "-440px", // Correct hide effect
+          right: showCredits ? "0px" : hoveringButton ? "-410px" : "-440px",
         }}
       >
-        {/* Toggle Button - No Rounded Edges */}
         <button
           onClick={() => setShowCredits(!showCredits)}
           onMouseEnter={() => setHoveringButton(true)}
@@ -58,23 +80,18 @@ export default function Home() {
           {showCredits ? (hoveringButton ? "> Credits" : "< Credits") : (hoveringButton ? "< Credits" : "> Credits")}
         </button>
 
-        {/* Credits Content */}
         <div className="bg-white/80 p-8 shadow-2xl min-w-[250px] relative">
-          {/* Logo placed at the top of the credit box */}
           <div className="flex justify-center mb-4">
             <Image
               src="/img/lowercase2_logo.png"
               alt="Lowercase2 Logo"
-              width={360} // Adjust width as needed
-              height={260} // Maintain aspect ratio
+              width={360}
+              height={260}
               className="w-full max-w-[400px] h-auto"
             />
           </div>
 
-          {/* Move $Credits$ to the Left */}
           <h2 className="text-3xl font-bold mb-4 text-green-500 text-left">$Credits$</h2>
-
-          {/* Member & Role List */}
           <div className="space-y-4 text-left text-orange-500">
             <div>
               <p className="text-xl font-semibold">Mingwei Zhang</p>

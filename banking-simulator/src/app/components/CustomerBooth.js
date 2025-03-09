@@ -1,17 +1,32 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function CustomerBooth({ parentFunction, parentFunction2, customerMood}) {
+export default function CustomerBooth({ parentFunction, parentFunction2, customerMood, setCustomerMood, buttonsDisabled, setButtonsDisabled }) {
   // "hidden" means the customer is centered but invisible;
   // "centerVisible" means the customer is visible at center.
-
   const [customerState, setCustomerState] = useState("hidden");
   const [animating, setAnimating] = useState(false);
   const [animationType, setAnimationType] = useState(null);
   const [emote, setEmote] = useState(null);
+  // Local state to control whether the emote (Satisfied/Mad) buttons are clickable
+  const [emoteButtonsDisabled, setEmoteButtonsDisabled] = useState(false);
 
-  const customerImage =
-    animationType === "exit" ? "/img/Customer2.png" : "/img/Customer.png";
+  // Helper to get a random customer index (0, 1, 2, or more). Ensures a new one if a previous value is provided.
+  const getRandomCustomer = (prev) => {
+    let newCustomer = Math.floor(Math.random() * 6);
+    if (prev !== undefined) {
+      while (newCustomer === prev) {
+        newCustomer = Math.floor(Math.random() * 6);
+      }
+    }
+    return newCustomer;
+  };
+
+  // Set initial customer randomly.
+  const [currentCustomer, setCurrentCustomer] = useState(getRandomCustomer());
+
+  // Use the same image for both enter and exit animations.
+  const customerImage = `/img/customers/customer${currentCustomer}.png`;
 
   const handleAnimationEnd = (e) => {
     if (e.animationName === "enterAnimation") {
@@ -22,25 +37,31 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       setAnimating(false);
       setAnimationType(null);
       setCustomerState("hidden");
+      // Update to a new random customer for the next appearance.
+      setCurrentCustomer(prev => getRandomCustomer(prev));
+      // Once exit animation ends, trigger parent's next customer effect.
+      parentFunction();
     }
   };
 
+  // When Move to Center is clicked, re-enable interactive buttons and start the enter animation.
   const moveToCenter = () => {
     if (!animating && customerState === "hidden") {
-
-      parentFunction()
+      setButtonsDisabled(false);
+      setEmoteButtonsDisabled(false);
+      parentFunction();
       setTimeout(() => {
-        parentFunction2(1)
+        parentFunction2(1);
       }, 1700);
-
       setAnimating(true);
       setAnimationType("enter");
     }
   };
 
+  // Auto-trigger exit animation when conditions are met.
   const moveToRight = () => {
     if (!animating && customerState === "centerVisible") {
-      parentFunction2(0)
+      parentFunction2(0);
       setAnimating(true);
       setAnimationType("exit");
     }
@@ -48,8 +69,7 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
 
   let wrapperAnimationClass = "";
   if (animating) {
-    wrapperAnimationClass =
-      animationType === "enter" ? "animate-enter" : "animate-exit";
+    wrapperAnimationClass = animationType === "enter" ? "animate-enter" : "animate-exit";
   }
 
   const restingWrapperStyle = !animating
@@ -58,19 +78,19 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
       : { left: "124px", bottom: "-10px", opacity: 0 }
     : {};
 
-  const handleEmote = (type) => {
-    console.log("Inside CustomerBooth.js :", customerMood)
-    setEmote(type);
-  };
-
+  // When customerMood becomes "happy" or "angry", start the emote animation and auto-trigger exit after 3 seconds.
   useEffect(() => {
-    if (emote) {
+    if (customerMood === "happy" || customerMood === "angry") {
+      setEmote(customerMood);
       const timer = setTimeout(() => {
         setEmote(null);
+        setCustomerMood("");
+        setButtonsDisabled(true);
+        moveToRight();
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [emote]);
+  }, [customerMood]);
 
   const emoteImage =
     emote === "happy"
@@ -116,30 +136,50 @@ export default function CustomerBooth({ parentFunction, parentFunction2, custome
             </div>
           )}
         </div>
-
       </div>
 
       {/* Control Buttons */}
       <div className="mt-4 flex gap-4 items-center">
-        <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50"
-          onClick={() => handleEmote("happy")}
-          disabled={emote !== null}>
+        <button
+          className="hidden px-4 py-2 bg-green-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-green-600"
+          onClick={() => {
+            setCustomerMood("happy");
+            setEmoteButtonsDisabled(true);
+            setButtonsDisabled(true);
+          }}
+          disabled={emoteButtonsDisabled || customerState !== "centerVisible" || animating}
+        >
           Satisfied
         </button>
-        <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50"
-          onClick={() => handleEmote("angry")}
-          disabled={emote !== null}>
+        <button
+          className="hidden px-4 py-2 bg-red-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-red-600"
+          onClick={() => {
+            setCustomerMood("angry");
+            setEmoteButtonsDisabled(true);
+            setButtonsDisabled(true);
+          }}
+          disabled={emoteButtonsDisabled || customerState !== "centerVisible" || animating}
+        >
           Mad
         </button>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-blue-600"
           onClick={moveToCenter}
-          disabled={animating || customerState !== "hidden"}>
-          Move to Center
+          disabled={animating || customerState !== "hidden"}
+        >
+          Next Customer
         </button>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+        <button
+          className="px-4 py-2 bg-red-700 text-white rounded-lg disabled:opacity-50 hover:cursor-pointer hover:bg-red-800"
           onClick={moveToRight}
-          disabled={animating || customerState !== "centerVisible"}>
-          Move to Right
+          disabled={
+            animating ||
+            customerState !== "centerVisible" ||
+            emoteButtonsDisabled ||
+            buttonsDisabled
+          }
+        >
+          Emergency Button
         </button>
       </div>
 
