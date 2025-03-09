@@ -3,11 +3,11 @@ import CustomerBooth from "../components/CustomerBooth";
 import DialogueBox from "../components/dialoguebox";
 import Tablet from "../components/tablet";
 import Desk from "../components/desk";
+import chat from "../dialogue/chat.json"
 
 import { useState, useEffect } from 'react'
 
 export default function Home() {
-
   const key = process.env.NEXT_PUBLIC_API_KEY
   //Get ALL Customers      FOR MAIN AND FOR ROTATION OF CUSTOMERS
   const [customerList, setCustomerList] = useState([]);
@@ -15,6 +15,7 @@ export default function Home() {
   const [customerExists, customerArrival] = useState(2);
   const [customerMood, setCustomerMood] = useState("");
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const [textAdvance, nextText] = useState(0);
 
   useEffect(() => {
     const fetchCustomersList = () => {
@@ -57,10 +58,12 @@ export default function Home() {
         className="relative w-[1200px] h-[800px] scale-100 md:scale-90 lg:scale-75 xl:scale-120 transition-transform duration-300 flex flex-col items-center"
       >
         <div className="flex justify-center">
-          <div className={customerExists == 2 ? "hidden" : customerExists ? "flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-[80%] mt-0 z-10 animate-fadeIn"
-            : "flex absolute rounded-2xl overflow-hidden w-[800px] h-[130px] opacity-75 mt-0 z-10 animate-fadeOut"
+          <div className={customerExists == 2 ? "hidden" : customerExists ? "flex absolute rounded-2xl overflow-hidden w-[300px] h-[230px] opacity-[85%] top-[-50px] left-44 z-10 animate-fadeIn"
+            : "flex absolute rounded-2xl overflow-hidden w-[300px] h-[230px] opacity-[85%] top-[-50px] left-44 z-10 animate-fadeOut"
           }>
-            <DialogueBox />
+            <button className="w-full h-full" onClick={() => {nextText((textAdvance+1) % chat[(currentCustomer) % customerList.length].text.length)}}>
+              <DialogueBox currentCustomer={currentCustomer % 3} textAdvance={textAdvance}/>
+            </button>
           </div>
         </div>
       {/* Inspector's Booth */}

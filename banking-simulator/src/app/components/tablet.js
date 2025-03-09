@@ -146,7 +146,7 @@ export default function Tablet({ customerId, apiKey, customerRequest, requestTyp
 
       </div>
       <div className="flex justify-center rounded-xl items-center overflow-hidden text-3xl mt-2">
-        $<input type="number" min={0} onChange={(e) => setInputAmount(Number(e.target.value))} className=" w-[70%] h-[55px] bg-white ml-1 rounded-xl"></input>
+        $<input type="number" min={0} onChange={(e) => setInputAmount(Number(e.target.value))} className="w-[70%] h-[55px] bg-white ml-1 rounded-xl p-2"></input>
       </div>
     </div>
   )
